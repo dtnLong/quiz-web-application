@@ -1,0 +1,90 @@
+<template>
+    <main class="relative grid w-full h-screen bg-cover place-items-center main-bg">
+        
+        <!------ Image background ----->
+        <!-- <div class="absolute inset-0 z-0">
+            <svg class="w-full h-full" width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_f)">
+            <path class="color animation-delay-200" fill-rule="evenodd" clip-rule="evenodd" d="M1553.19 -36.276C1644.43 55.6725 1636.34 207.759 1657.54 346.08C1680.64 496.78 1747.48 642.402 1680.3 792.995C1601.13 970.466 1457.65 1150.38 1282.26 1187.3C1110.7 1223.41 750.943 1118.9 630.975 1009.61C530.477 918.054 668.678 824.191 769.895 677.26C926.443 450.007 838.835 440.927 917.983 309.105C1006.61 161.494 841.821 -147.166 994.082 -200.768C1150.14 -255.707 1447.41 -142.886 1553.19 -36.276Z" fill="#F01515"/>
+            </g>
+            <g filter="url(#filter1_f)">
+            <path class="color"  fill-rule="evenodd" clip-rule="evenodd" d="M827.501 743.5C719.888 830.522 567.5 693.98 432.502 663.5C310 635.841 198.498 559.452 113.502 467C-38.2093 378 -251.707 263.794 -249.498 119.5C-247.121 -35.8464 36.1374 -211.855 173.719 -284.032C300.933 -350.769 443.37 -255.491 584.758 -230.064C715.17 -206.611 983.536 -274.678 1068.5 -173C1154.77 -69.7659 998.213 110.894 981.187 244.345C963.934 379.577 933.507 657.778 827.501 743.5Z" fill="#9015F0"/>
+            </g>
+            <g filter="url(#filter2_f)">
+            <path class='' fill-rule="evenodd" clip-rule="evenodd" d="M124.124 1661.07C-41.3161 1623.84 -169.788 1498.93 -256.05 1352.93C-342.328 1206.91 -372.744 1038.09 -342.577 871.19C-309.768 689.677 -255.931 474.29 -84.7963 405.471C81.3125 338.673 240.416 499.614 404.751 570.663C528.403 624.123 656.006 659.881 742.51 763.151C848.172 889.293 963.286 1037.61 931.053 1198.97C898.037 1364.25 733.069 1458.82 586.813 1542.57C443.19 1624.82 285.594 1697.4 124.124 1661.07Z" fill="#D90971"/>
+            </g>
+<defs>
+<filter id="filter0_f" x="-201.208" y="-864" width="2743.49" height="2804.45" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="250" result="effect1_foregroundBlur"/>
+</filter>
+<filter id="filter1_f" x="-831.177" y="-1193.41" width="2753.1" height="2748.52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="250" result="effect1_foregroundBlur"/>
+</filter>
+<filter id="filter2_f" x="-1009.84" y="-171.715" width="2580.68" height="2499.17" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="250" result="effect1_foregroundBlur"/>
+</filter>
+</defs>
+</svg>
+        </div> -->
+        
+        
+        <!------ Login Form ----->
+        <router-view/>
+
+        
+    </main>
+</template>
+
+<script>
+import Home from './views/Home.vue';
+import axios from 'axios';
+import {gsap} from 'gsap';
+import { onMounted } from '@vue/runtime-core';
+    export default {
+        components: {Home},
+
+        setup(){
+            onMounted (() => {
+                
+            })
+        }
+    }
+
+</script>
+
+<style scoped>
+    .main-bg{
+        background: url('./assets/background.svg') center center no-repeat;
+        background-size: cover;
+    }
+    .color{
+        animation: blob 4s infinite;
+        
+    }
+    .animation-delay-200{
+        animation-delay: 3s;
+    }
+    /* @keyframes blob {
+        0%{
+           transform: scale(1);
+        }
+
+        50%{
+            transform: scale(1.3);
+        }
+
+        70%{
+            transform: scale(0.7);
+        }
+
+        100%{
+            transform: scale(1);
+        }
+    } */
+</style>
