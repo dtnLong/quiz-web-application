@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import MainQuiz from '../views/MainQuiz.vue'
-import Submit from '../views/Submit.vue'
+// import MainQuiz from '../views/MainQuiz.vue'
+// import Submit from '../views/Submit.vue'
 const history = createWebHistory();
 
 const routes = [
@@ -10,19 +10,23 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  {
-    path: '/round1/:quizCode',
-    name: 'MainQuiz',
-    component: MainQuiz,
-    props: true,
+  // {
+  //   path: '/round1/:quizCode',
+  //   name: 'MainQuiz',
+  //   component: MainQuiz,
+  //   props: true,
     
-  },
-  {
-    path: '/submit/',
-    name: 'Submit',
-    component: Submit
+  // },
+  // {
+  //   path: '/submit/',
+  //   name: 'Submit',
+  //   component: Submit,
+  //   props: (route) => ({
+        
+  //       data: route.params.submitPayload
+  //   }),
 
-  }
+  // }
 ]
 
 const router = createRouter({

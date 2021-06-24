@@ -1,8 +1,8 @@
 <template>
 
-    <section class="relative z-10 w-full">
+    <section v-if="!isSubmitted" class="relative z-10 w-full">
         <!-- Time Countdown Animation ---->
-        <TimeCount/>
+        <TimeCount @toSubmit="toggleIsSubmitted"/>
         
         <!-- Question Number List ---->
         <div class="flex justify-center gap-4 mb-10">
@@ -25,7 +25,7 @@
 
             <div class='flex items-center gap-14'>
                 <a href="#"  @click="toPreviousQuestion" class='text-xl px-7 opacity-80'>Previous question</a>
-                <a href="#" @click="toNextQuestion" class="inline-block py-3 text-xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600 ">Next question</a>
+                <a href="#" @click="toNextQuestion" class="inline-block py-3 text-xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600 ">{{buttonText}}</a>
             </div>
             
         </div>
@@ -33,23 +33,26 @@
 
     </section>
 
+    <Submit v-else :submitPayLoad="submitPayLoad" @backToQuiz="toggleIsSubmitted"/>
    
 </template>
 
 <script>
-
-import {computed, onMounted, ref, reactive, onUpdated} from 'vue'
-import TimeCount from "../components/TimeCount.vue"
-import QuestNumber from "../components/QuestNumber.vue"
-import Option from "../components/Option.vue"
+import {useRouter} from 'vue-router'
+import {computed, onMounted, ref, reactive, onUpdated, watchEffect} from 'vue'
+import TimeCount from "./TimeCount.vue"
+import QuestNumber from "./QuestNumber.vue"
+import Option from "./Option.vue"
+import Submit from "./Submit.vue"
 export default {
-    components: {TimeCount, QuestNumber, Option},
+    components: {TimeCount, QuestNumber, Option, Submit},
     props: {
         quizCode: String
         },
     setup(props, context) {
+        const isSubmitted = ref(false);
         const currentQuestionIndex = ref(0);
-       
+        
         const questions = [
             {
                 questionText: "Why are LCL lead times longer than FCL lead times 1?",
@@ -94,7 +97,8 @@ export default {
         const questionNumberList = ref(questions.map((element,index) => (
             index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
             )));
-        let currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
+        const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
+        const buttonText = computed(() => currentQuestionNumber.value === questions.length? "Go to Submit" : "Next question" );
         let isSelected;
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
@@ -159,6 +163,9 @@ export default {
 
         const toNextQuestion = () => {
             selectAns();
+
+            
+
             if (currentQuestionIndex.value < (questions.length - 1) ){
 
                 if (isSelected){
@@ -170,6 +177,9 @@ export default {
                 currentQuestionIndex.value+=1; 
                 
                 updateQuestionState('active');
+            }else{
+                
+                isSubmitted.value = true;
             }
             
             
@@ -193,6 +203,9 @@ export default {
             
         }
 
+        onUpdated(()=>{
+            console.log(currentQuestionNumber.value);
+        })
 
         const addToSumbitPayLoad = ({questionText, questionNumber, optionSelected, optionText}) => {
         
@@ -220,8 +233,12 @@ export default {
             }
             
         })
+        const toggleIsSubmitted = (state) => {
+            if (state) {selectAns()};
+            isSubmitted.value = state;
+        }
         
-        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, currentQuestionNumber, checkValue}
+        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, currentQuestionNumber, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted}
     },
 }
 </script>

@@ -37,6 +37,14 @@ export default {
                 document.getElementById(`${option.value}`).checked = false;
             }
         })
+
+        onMounted(()=> {
+            if (props.hasChecked === option.value){
+                document.getElementById(`${option.value}`).checked = true;
+            }else {
+                document.getElementById(`${option.value}`).checked = false;
+            }
+        })
         
         
         return{option}
