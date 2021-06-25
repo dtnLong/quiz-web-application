@@ -89,17 +89,29 @@ export default {
         ]
         const submitPayLoad = reactive({
             quizCode: props.quizCode,
-            data: [
-                
-            ]
+            data: []
 
         })
+
+        const initSubmitPayload = () => {
+            
+            questions.forEach((item, index) => {
+                submitPayLoad.data.splice(index, 0, {questionText: item.questionText, questionNumber: index+1, optionText: null, optionSelected: null});
+            });
+
+            console.log(submitPayLoad);
+        }
+
+        initSubmitPayload();
+
+
+
         const questionNumberList = ref(questions.map((element,index) => (
             index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
             )));
         const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
         const buttonText = computed(() => currentQuestionNumber.value === questions.length? "Go to Submit" : "Next question" );
-        let isSelected;
+        // let isSelected;
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
         }
@@ -109,11 +121,13 @@ export default {
              
         const handleQuestionClick = (el) => {
             selectAns();
-            if (isSelected){
-                    updateQuestionState('done');
-            }else{
-                updateQuestionState('default');
-            }
+
+            //TODO: refactor this
+            // if (isSelected){
+            //         updateQuestionState('done');
+            // }else{
+            //     updateQuestionState('default');
+            // }
             
             // let updateQuestionIndex = parseInt(el.innerText) - 1;
             // currentQuestionIndex.value  = updateQuestionIndex;
@@ -128,35 +142,42 @@ export default {
         
 
         const selectAns = () => {
-            let optionSelected;
-            let optionText;
+            // let optionSelected;
+            // let optionText;
             
             if (document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`)){
                 //TODO: get the option select by the first character of the option text. 
-                optionSelected = document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`).value;
+                let optionSelected = document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`).value;
                 
-                optionText = document.querySelector(`label[for="${optionSelected}"]`).innerText;
-                isSelected =true;
+                let optionText = document.querySelector(`label[for="${optionSelected}"]`).innerText;
+                //isSelected =true;
+                submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
+        submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
+                updateQuestionState('done');
 
             }else{
-                optionSelected  = null;
-                optionText = null;
-                isSelected =false;
+                updateQuestionState('default');
             }
+            // else{
+            //     optionSelected  = null;
+            //     optionText = null;
+            //     isSelected =false;
+            // }
 
             
 
              
 
-            let answer = {
-                questionText: questions[currentQuestionIndex.value].questionText,
-                questionNumber: currentQuestionNumber.value,
-                optionSelected,
-                optionText
+            // let answer = {
+            //     // questionText: questions[currentQuestionIndex.value].questionText,
+            //     // questionNumber: currentQuestionNumber.value,
+            //     optionSelected,
+            //     optionText
 
-            }
+            // }
 
-            addToSumbitPayLoad(answer);
+            //addToSumbitPayLoad(answer);
+            
             
         }
 
@@ -168,11 +189,11 @@ export default {
 
             if (currentQuestionIndex.value < (questions.length - 1) ){
 
-                if (isSelected){
-                    updateQuestionState('done');
-                }else{
-                    updateQuestionState('default');
-                }
+                // if (isSelected){
+                //     updateQuestionState('done');
+                // }else{
+                //     updateQuestionState('default');
+                // }
                 
                 currentQuestionIndex.value+=1; 
                 
@@ -190,11 +211,11 @@ export default {
             selectAns();
             if (currentQuestionIndex.value > 0 ){
 
-                if (isSelected){
-                    updateQuestionState('done');
-                }else{
-                    updateQuestionState('default');
-                }
+                // if (isSelected){
+                //     updateQuestionState('done');
+                // }else{
+                //     updateQuestionState('default');
+                // }
                 
                 currentQuestionIndex.value-=1; 
                 
@@ -203,25 +224,26 @@ export default {
             
         }
 
-        onUpdated(()=>{
-            console.log(currentQuestionNumber.value);
-        })
-
-        const addToSumbitPayLoad = ({questionText, questionNumber, optionSelected, optionText}) => {
         
-            let indexToAdd = questionNumber - 1;
+
+        // const addToSumbitPayLoad = ({optionSelected, optionText}) => {
+        
+        //     // let indexToAdd = questionNumber - 1;
            
-           if (submitPayLoad.data[indexToAdd]){
-               submitPayLoad.data[indexToAdd].optionSelected = optionSelected;
-           submitPayLoad.data[indexToAdd].optionText = optionText;
-           }
-           else{
-               submitPayLoad.data.splice(indexToAdd, 0, {questionText, questionNumber, optionSelected, optionText});
-           }
+        // //    if (submitPayLoad.data[currentQuestionIndex.value]){
+        // //        submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
+        // //    submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
+        // //    }
+        // //    else{
+        // //        submitPayLoad.data.splice(currentQuestionIndex.value, 0, {questionText, questionNumber, optionSelected, optionText});
+        // //    }
+
+        //   submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
+        // submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
            
 
-        }
-          const checkValue = computed(() => {
+        // }
+        const checkValue = computed(() => {
             
             let answer  = submitPayLoad.data.find(answer => answer.questionNumber === currentQuestionNumber.value);
            
@@ -233,8 +255,13 @@ export default {
             }
             
         })
+        
+        
         const toggleIsSubmitted = (state) => {
-            if (state) {selectAns()};
+            if (state) {
+                selectAns();
+                
+            };
             isSubmitted.value = state;
         }
         

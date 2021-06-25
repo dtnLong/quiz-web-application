@@ -43,7 +43,9 @@ export default {
                 if (QUIZ_DURATION.value>0){
                     QUIZ_DURATION.value -=1;
                 }else{
+
                     emit("toSubmit", true);
+                    clearInterval(timeInterval);
                 }
                 
 
