@@ -17,7 +17,7 @@ import java.util.Objects;
 public class QuizCode {
 
     @Id
-    private Long code;
+    private String code;
 
     @Override
     public boolean equals(Object o) {
