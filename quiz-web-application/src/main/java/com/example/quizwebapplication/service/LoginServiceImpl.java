@@ -1,5 +1,7 @@
 package com.example.quizwebapplication.service;
 
+import com.example.quizwebapplication.dto.Error;
+import com.example.quizwebapplication.dto.LoginResponse;
 import com.example.quizwebapplication.entity.Login;
 import com.example.quizwebapplication.repository.LoginRepository;
 import lombok.AllArgsConstructor;
@@ -16,18 +18,25 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public String checkLogin(String groupName, String quizCode) {
+    public LoginResponse checkLogin(String groupName, String quizCode) {
         Optional<Login> savedLogin = loginRepository.findByGroupName(groupName);
+        LoginResponse response = new LoginResponse();
         if (savedLogin.isEmpty()) {
-            return "not found";
+            response.getErrors().add(new Error("name not found", "Group name not found"));
+            response.setSuccess(false);
+            return response;
         }
         if (savedLogin.get().isExpired()) {
-            return "expired";
+            response.getErrors().add(new Error("expired", "Login credential expired"));
+            response.setSuccess(false);
+            return response;
         }
         if (!savedLogin.get().getQuizCode().getCode().equals(quizCode)) {
-            return "code";
+            response.getErrors().add(new Error("incorrect quiz code", "Quiz code not found for group name"));
+            response.setSuccess(false);
+            return response;
         }
         loginRepository.updateExpired(groupName, true);
-        return "success";
+        return response;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.quizwebapplication.controller;
 
+import com.example.quizwebapplication.dto.LoginResponse;
+import com.example.quizwebapplication.entity.Login;
 import com.example.quizwebapplication.service.LoginService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,14 +20,14 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping(value = "/api/login")
-    public ResponseEntity<Map<String, String>> loginGroup(@RequestBody Map<String, String> loginInfo) {
-        Map<String, String> responseMessage = new HashMap<>();
-        String loginStatus = loginService.checkLogin(loginInfo.get("groupName"), loginInfo.get("quizCode"));
-        responseMessage.put("status", loginStatus);
-        if (!loginStatus.equals("success")) {
-            return new ResponseEntity<>(responseMessage, HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<LoginResponse> loginGroup(@RequestBody Map<String, String> loginInfo) {
+        LoginResponse response = loginService.checkLogin(loginInfo.get("groupName"), loginInfo.get("quizCode"));
+        if (!response.isSuccess()) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        response.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
