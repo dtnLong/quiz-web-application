@@ -13,4 +13,5 @@ public class LoginResponse {
     private Integer status;
     private ArrayList<Error> errors = new ArrayList<>();
     private boolean success = true;
+    private String token;
 }
