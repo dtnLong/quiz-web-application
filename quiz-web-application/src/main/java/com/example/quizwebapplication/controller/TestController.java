@@ -20,9 +20,9 @@ public class TestController {
     private final AuthenticationService authenticationService;
 
     @GetMapping(value = "/api/test/name")
-    public ResponseEntity<Map<String, String>> loginGroup(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Map<String, String>> loginGroup(@CookieValue("token") String token) {
         Map<String, String> response = new HashMap<>();
-        response.put("responsdname", (String) authenticationService.getCustomClaim(token, "groupName"));
+        response.put("cookieToken", token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

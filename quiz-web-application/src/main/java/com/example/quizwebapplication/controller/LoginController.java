@@ -1,7 +1,6 @@
 package com.example.quizwebapplication.controller;
 
 import com.example.quizwebapplication.dto.LoginResponse;
-import com.example.quizwebapplication.entity.Login;
 import com.example.quizwebapplication.service.AuthenticationService;
 import com.example.quizwebapplication.service.LoginService;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -27,11 +25,16 @@ public class LoginController {
         LoginResponse response = loginService.checkLogin((String) loginInfo.get("groupName"), (String) loginInfo.get("quizCode"));
         if (!response.isSuccess()) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-        response.setToken(authenticationService.createToken(loginInfo));
+        String token = authenticationService.createToken(loginInfo);
+        response.setToken(token);
         response.setStatus(HttpStatus.OK.value());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Set-Cookie", "token=" + token + "; Max-Age=172800; HttpOnly");
+
+        return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 
 }
