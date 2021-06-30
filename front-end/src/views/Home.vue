@@ -45,7 +45,7 @@ export default {
         if (response.data.success) {
           isLogin.value = true;
         }
-      }).catch(err => console.log(err));
+      }).catch(err => error.value = err.response.data.errors[0].message);
     }
     }
 
