@@ -27,7 +27,7 @@ export default {
   components: {MainQuiz},
   
   setup() {
-    const isLogin = ref(false);
+    const isLogin = ref(true);
     const groupName = ref(null);
     const quizCode = ref(null);
     const error = ref(null);

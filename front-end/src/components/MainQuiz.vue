@@ -14,12 +14,12 @@
          <div class="z-10 flex flex-col items-center w-9/12 mx-auto from-gray-300 pb-14 text-gray-50 rounded-xl bg-gradient-to-br to-gray-400 pt-9 form-container">
 
             <!-- Question --->
-            <h1 class="text-3xl font-bold text-center ">{{questions[currentQuestionIndex].questionText}}</h1>
+            <h1 class="text-3xl font-bold text-center select-none ">{{questions[currentQuestionIndex].questionText}}</h1>
             
 
             <!-- Option List --->
             <div class='flex flex-col w-9/12 gap-8 mx-auto my-12 px-14 '>
-                <Option v-for=" (option, index) in questions[currentQuestionIndex].optionText" :key="index" :optionText="option" :questionNumber="currentQuestionNumber.toString()" :optionIndex="index.toString()" :hasChecked="checkValue" />
+                <Option v-for=" (option, index) in questions[currentQuestionIndex].optionText" :key="index" :optionText="option" :questionNumber="currentQuestionNumber.toString()" :optionIndex="index.toString()" :hasChecked="checkValue" @optionSelected ="handleSelected" />
             </div>
             
 
@@ -96,28 +96,32 @@ export default {
         const initSubmitPayload = () => {
             
             questions.forEach((item, index) => {
-                submitPayLoad.data.splice(index, 0, {questionText: item.questionText, questionNumber: index+1, optionText: null, optionSelected: null});
+                submitPayLoad.data.splice(index, 0, {questionText: item.questionText, questionNumber: index+1, optionText: 'N/A', optionSelected: 'N/A'});
             });
 
             console.log(submitPayLoad);
         }
-
+        
+        //Initialize the submit payload once questions are fetched.
         initSubmitPayload();
 
 
-
+        
         const questionNumberList = ref(questions.map((element,index) => (
             index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
             )));
         const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
         const buttonText = computed(() => currentQuestionNumber.value === questions.length? "Go to Submit" : "Next question" );
-        // let isSelected;
+    
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
         }
         
-        
-      
+        //handle any option selecting event change.
+        const optionSelected = ref('N/A');
+        const handleSelected = (option) => {
+            optionSelected.value = option;
+        }
              
         const handleQuestionClick = (el) => {
             selectAns();
@@ -142,41 +146,33 @@ export default {
         
 
         const selectAns = () => {
-            // let optionSelected;
-            // let optionText;
-            
-            if (document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`)){
-                //TODO: get the option select by the first character of the option text. 
-                let optionSelected = document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`).value;
+           
+        //     if (document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`)){
+        //         //TODO: get the option select by the first character of the option text. 
+        //         let optionSelected = document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`).value;
                 
-                let optionText = document.querySelector(`label[for="${optionSelected}"]`).innerText;
-                //isSelected =true;
-                submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
-        submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
+        //         let optionText = document.querySelector(`label[for="${optionSelected}"]`).innerText;
+        //         submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
+        // submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
+        //         updateQuestionState('done');
+
+        //     }else{
+        //         updateQuestionState('default');
+        //     }
+
+
+        if (optionSelected.value !== 'N/A'){
+                let optionText = document.querySelector(`label[for="${optionSelected.value}"]`).innerText;
+                submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected.value;
+                submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
+                
+                optionSelected.value = 'N/A';
                 updateQuestionState('done');
 
             }else{
                 updateQuestionState('default');
             }
-            // else{
-            //     optionSelected  = null;
-            //     optionText = null;
-            //     isSelected =false;
-            // }
-
             
-
-             
-
-            // let answer = {
-            //     // questionText: questions[currentQuestionIndex.value].questionText,
-            //     // questionNumber: currentQuestionNumber.value,
-            //     optionSelected,
-            //     optionText
-
-            // }
-
-            //addToSumbitPayLoad(answer);
             
             
         }
@@ -265,7 +261,7 @@ export default {
             isSubmitted.value = state;
         }
         
-        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, currentQuestionNumber, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted}
+        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, currentQuestionNumber, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected}
     },
 }
 </script>
