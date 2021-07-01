@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {
 
-    @Query(value = "SELECT L FROM Login L WHERE L.group.name = :groupName")
-    Optional<Login> findByGroupName(String groupName);
+    @Query(value = "SELECT L FROM Login L WHERE L.group.name = :groupName AND L.quizCode.code = :quizCode")
+    Optional<Login> findByGroupNameAndQuizCode(String groupName, String quizCode);
 
     @Modifying
     @Query(value = "UPDATE Login L SET L.expired = :expired WHERE L IN (" +

@@ -19,20 +19,15 @@ public class LoginServiceImpl implements LoginService {
     @Override
     @Transactional
     public LoginResponse checkLogin(String groupName, String quizCode) {
-        Optional<Login> savedLogin = loginRepository.findByGroupName(groupName);
+        Optional<Login> savedLogin = loginRepository.findByGroupNameAndQuizCode(groupName, quizCode);
         LoginResponse response = new LoginResponse();
         if (savedLogin.isEmpty()) {
-            response.getErrors().add(new Error("name not found", "Group name not found"));
+            response.getErrors().add(new Error("invalid", "Group name not exist or Quiz code invalid"));
             response.setSuccess(false);
             return response;
         }
         if (savedLogin.get().isExpired()) {
             response.getErrors().add(new Error("expired", "Login credential expired"));
-            response.setSuccess(false);
-            return response;
-        }
-        if (!savedLogin.get().getQuizCode().getCode().equals(quizCode)) {
-            response.getErrors().add(new Error("incorrect quiz code", "Quiz code not found for group name"));
             response.setSuccess(false);
             return response;
         }
