@@ -34,7 +34,7 @@ public class LoginController {
         response.setStatus(HttpStatus.OK.value());
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("Set-Cookie", "token=" + token + "; Max-Age=172800; HttpOnly");
+        responseHeaders.add("Set-Cookie", "token=" + token + "; Path=/api; Max-Age=172800; HttpOnly");
 
         return ResponseEntity.ok().headers(responseHeaders).body(response);
     }

@@ -11,10 +11,11 @@ import java.util.Objects;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "group_register")
+@Table(name = "group_registered")
 public class Group {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -23,20 +24,27 @@ public class Group {
     @Column
     private Short attempt;
 
+    @Column
+    private Long score;
+
+    @OneToOne(targetEntity = QuizCode.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "latest_quiz", referencedColumnName = "code")
+    private QuizCode quizCode;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Group group = (Group) o;
-        return Objects.equals(id, group.id) && Objects.equals(name, group.name) && Objects.equals(attempt, group.attempt) && Objects.equals(score, group.score);
+        return Objects.equals(id, group.id)
+                && Objects.equals(name, group.name)
+                && Objects.equals(attempt, group.attempt)
+                && Objects.equals(score, group.score)
+                && Objects.equals(quizCode, group.quizCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, attempt, score);
+        return Objects.hash(id, name, attempt, score, quizCode);
     }
-
-    @Column
-    private Long score;
-
 }

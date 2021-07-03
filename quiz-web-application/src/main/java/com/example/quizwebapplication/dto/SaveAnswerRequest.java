@@ -10,9 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class QuestionFormat {
-
-    private Long questionNumber;
-    private List<ChoiceFormat> choices = new ArrayList<>();
-
+public class SaveAnswerRequest {
+    private String groupName;
+    private String quizCode;
+    private List<AnswerResponseFormat> answers = new ArrayList<>();
 }

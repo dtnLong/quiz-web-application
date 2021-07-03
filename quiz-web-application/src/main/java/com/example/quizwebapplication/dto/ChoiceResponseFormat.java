@@ -7,9 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ChoiceFormat {
-
+public class ChoiceResponseFormat {
     private String option;
     private String choiceText;
-
 }

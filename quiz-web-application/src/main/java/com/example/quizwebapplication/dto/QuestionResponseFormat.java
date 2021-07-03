@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class QuizFormat {
-    private String code;
-    private List<QuestionResponseFormat> questions = new ArrayList<>();
+public class QuestionResponseFormat {
+    private Long questionNumber;
+    private List<ChoiceResponseFormat> choices = new ArrayList<>();
 }

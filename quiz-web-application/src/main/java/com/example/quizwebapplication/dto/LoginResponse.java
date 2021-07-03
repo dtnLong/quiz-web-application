@@ -9,9 +9,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class LoginResponse {
-    private Integer status;
-    private ArrayList<Error> errors = new ArrayList<>();
-    private boolean success = true;
+public class LoginResponse extends Response {
     private String token;
 }

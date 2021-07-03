@@ -1,7 +1,7 @@
 package com.example.quizwebapplication.service;
 
-import com.example.quizwebapplication.dto.ChoiceFormat;
-import com.example.quizwebapplication.dto.QuestionFormat;
+import com.example.quizwebapplication.dto.ChoiceResponseFormat;
+import com.example.quizwebapplication.dto.QuestionResponseFormat;
 import com.example.quizwebapplication.dto.QuizFormat;
 import com.example.quizwebapplication.entity.Quiz;
 import com.example.quizwebapplication.repository.QuizRepository;
@@ -21,20 +21,20 @@ public class QuizServiceImpl implements QuizService {
 
     private QuizFormat parseQuiz(List<Quiz> unformattedQuiz, String quizCode) {
         QuizFormat quizFormat = new QuizFormat();
-        QuestionFormat questionFormat = new QuestionFormat();
+        QuestionResponseFormat questionResponseFormat = new QuestionResponseFormat();
         quizFormat.setCode(quizCode);
         for (int i = 0; i < unformattedQuiz.size(); i++) {
             Quiz current = unformattedQuiz.get(i);
 
-            ChoiceFormat choiceFormat = new ChoiceFormat();
-            choiceFormat.setOption(current.getQuestionChoice().getOption());
-            choiceFormat.setChoiceText(current.getQuestionChoice().getChoice().getText());
-            questionFormat.getChoices().add(choiceFormat);
+            ChoiceResponseFormat choiceResponseFormat = new ChoiceResponseFormat();
+            choiceResponseFormat.setOption(current.getQuestionChoice().getOption());
+            choiceResponseFormat.setChoiceText(current.getQuestionChoice().getChoice().getText());
+            questionResponseFormat.getChoices().add(choiceResponseFormat);
 
             if (i == unformattedQuiz.size() - 1 || !current.getQuestionNumber().equals(unformattedQuiz.get(i + 1).getQuestionNumber())) {
-                questionFormat.setQuestionNumber(current.getQuestionNumber());
-                quizFormat.getQuestions().add(questionFormat);
-                questionFormat = new QuestionFormat();
+                questionResponseFormat.setQuestionNumber(current.getQuestionNumber());
+                quizFormat.getQuestions().add(questionResponseFormat);
+                questionResponseFormat = new QuestionResponseFormat();
             }
         }
         return quizFormat;
