@@ -6,12 +6,15 @@ import com.example.quizwebapplication.dto.SaveAnswerRequest;
 import com.example.quizwebapplication.dto.SaveAnswerResponse;
 import com.example.quizwebapplication.service.AnswerService;
 import com.example.quizwebapplication.service.AuthenticationService;
+import com.example.quizwebapplication.service.LoginService;
 import com.example.quizwebapplication.service.QuizService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -21,6 +24,7 @@ public class QuizController {
     private final AuthenticationService authenticationService;
     private final QuizService quizService;
     private final AnswerService answerService;
+    private final LoginService loginService;
 
     @GetMapping(value = "/api/quiz/{quizCode}")
     public ResponseEntity<GetQuizResponse> getQuiz(@CookieValue(value = "token", required = false) String token,
@@ -33,6 +37,7 @@ public class QuizController {
             response.getErrors().add(new Error("no token", "Unauthorized access"));
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
         if (!authenticationService.verifyToken(token)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setSuccess(false);
@@ -41,6 +46,7 @@ public class QuizController {
         }
 
         String quizCodeToken = (String) authenticationService.getCustomClaim(token, "quizCode");
+        String groupNameToken = (String) authenticationService.getCustomClaim(token, "groupName");
         if (!quizCode.equals(quizCodeToken)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setSuccess(false);
@@ -52,9 +58,19 @@ public class QuizController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(responseHeaders).body(response);
         }
 
+        if (loginService.getStartTime(groupNameToken, quizCode) != null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setSuccess(false);
+            response.getErrors().add(new Error("quiz_started", "Quiz already started"));
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        response.setQuiz(quizService.getQuizByCode(quizCode, groupNameToken));
+        loginService.updateStartTime(groupNameToken, quizCode);
+
         response.setStatus(HttpStatus.OK.value());
         response.setSuccess(true);
-        response.setQuiz(quizService.getQuizByCode(quizCode));
+
         return ResponseEntity.ok().body(response);
     }
 
@@ -83,6 +99,17 @@ public class QuizController {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setSuccess(false);
             response.getErrors().add(new Error("invalid", "Unauthorized access"));
+
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add("Set-Cookie", "token=null; Path=/api; Max-Age=0; HttpOnly");
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(responseHeaders).body(response);
+        }
+
+        if (loginService.getSubmitted(answers.getGroupName(), answers.getQuizCode())) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setSuccess(false);
+            response.getErrors().add(new Error("invalid", "Unauthorized access. Answer already submitted"));
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("Set-Cookie", "token=null; Path=/api; Max-Age=0; HttpOnly");

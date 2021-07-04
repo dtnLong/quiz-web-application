@@ -8,6 +8,7 @@ import com.example.quizwebapplication.entity.Group;
 import com.example.quizwebapplication.entity.QuizCode;
 import com.example.quizwebapplication.repository.AnswerRepository;
 import com.example.quizwebapplication.repository.GroupRepository;
+import com.example.quizwebapplication.repository.LoginRepository;
 import com.example.quizwebapplication.repository.QuizCodeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
     private final QuizCodeRepository quizCodeRepository;
     private final GroupRepository groupRepository;
+    private final LoginRepository loginRepository;
 
     @Transactional
     @Override
@@ -39,7 +41,7 @@ public class AnswerServiceImpl implements AnswerService {
             return response;
         }
 
-        if (quizCode.equals(null)) {
+        if (quizCode == null) {
             response.getErrors().add(new Error("not_found", "Quiz code not found"));
             response.setStatus(HttpStatus.NOT_FOUND.value());
             response.setSuccess(false);
@@ -59,6 +61,7 @@ public class AnswerServiceImpl implements AnswerService {
         // Increase attempt of the submit group
         groupRepository.addAttempt(providedAnswers.getGroupName());
         groupRepository.updateLatestQuiz(providedAnswers.getQuizCode(), providedAnswers.getGroupName());
+        loginRepository.updateSubmitted(providedAnswers.getGroupName(), providedAnswers.getQuizCode(), true);
         response.setStatus(HttpStatus.OK.value());
         response.setSuccess(true);
         return response;

@@ -3,6 +3,7 @@ package com.example.quizwebapplication.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -28,6 +29,12 @@ public class Login {
 
     @Column
     private boolean expired = false;
+
+    @Column
+    private boolean submitted = false;
+
+    @Column(name = "start_time")
+    private Date startTime;
 
     @Override
     public boolean equals(Object o) {

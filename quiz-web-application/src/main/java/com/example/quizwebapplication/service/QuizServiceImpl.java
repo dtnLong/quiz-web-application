@@ -4,12 +4,14 @@ import com.example.quizwebapplication.dto.ChoiceResponseFormat;
 import com.example.quizwebapplication.dto.QuestionResponseFormat;
 import com.example.quizwebapplication.dto.QuizFormat;
 import com.example.quizwebapplication.entity.Quiz;
+import com.example.quizwebapplication.repository.LoginRepository;
 import com.example.quizwebapplication.repository.QuizRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
+    private final LoginRepository loginRepository;
 
     private QuizFormat parseQuiz(List<Quiz> unformattedQuiz, String quizCode) {
         QuizFormat quizFormat = new QuizFormat();
@@ -42,12 +45,13 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public QuizFormat getQuizByCode(String quizCode) {
+    public QuizFormat getQuizByCode(String quizCode, String groupName) {
         Sort sort = Sort.by("questionNumber").ascending();
         Optional<List<Quiz>> quiz = quizRepository.getQuizByQuizCode(quizCode, sort);
         if (quiz.isEmpty()) {
             return null;
         }
-        return parseQuiz(quiz.get(), quizCode);
+        QuizFormat quizResponse = parseQuiz(quiz.get(), quizCode);
+        return quizResponse;
     }
 }
