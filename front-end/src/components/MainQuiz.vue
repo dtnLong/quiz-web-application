@@ -44,49 +44,64 @@ import TimeCount from "./TimeCount.vue"
 import QuestNumber from "./QuestNumber.vue"
 import Option from "./Option.vue"
 import Submit from "./Submit.vue"
+import QuizAPI from "../services/QuizAPI"
 export default {
     components: {TimeCount, QuestNumber, Option, Submit},
     props: {
-        quizCode: String
+        quizCode: String,
+        groupName: String,
         },
     setup(props, context) {
         const isSubmitted = ref(false);
         const currentQuestionIndex = ref(0);
         
-        const questions = [
-            {
-                questionText: "Why are LCL lead times longer than FCL lead times 1?",
-                optionText: [
+        // const questions = [
+        //     {
+        //         questionText: "Why are LCL lead times longer than FCL lead times 1?",
+        //         optionText: [
                     
-                    "Shipments may move on different vessels",
-                    "Consolidation and deconsolidation procedures at origin and destination ports take longer",
-                    "Shipments may take different routes",
-                    "All of the above"
+        //             "Shipments may move on different vessels",
+        //             "Consolidation and deconsolidation procedures at origin and destination ports take longer",
+        //             "Shipments may take different routes",
+        //             "All of the above"
 
-                ]
-            },
-            {
-                questionText: "Why are LCL lead times longer than FCL lead times 2?",
-                optionText: [
-                    "Shipments may move on different vessels",
-                    "Consolidation and deconsolidation procedures at origin and destination ports take longer",
-                    "Shipments may take different routes",
-                    "All of the above"
+        //         ]
+        //     },
+        //     {
+        //         questionText: "Why are LCL lead times longer than FCL lead times 2?",
+        //         optionText: [
+        //             "Shipments may move on different vessels",
+        //             "Consolidation and deconsolidation procedures at origin and destination ports take longer",
+        //             "Shipments may take different routes",
+        //             "All of the above"
 
-                ]
-            },
-            {
-                questionText: "Why are LCL lead times longer than FCL lead times 3?",
-                optionText: [
-                    "Shipments may move on different vessels",
-                    "Consolidation and deconsolidation procedures at origin and destination ports take longer",
-                    "Shipments may take different routes",
-                    "All of the above"
+        //         ]
+        //     },
+        //     {
+        //         questionText: "Why are LCL lead times longer than FCL lead times 3?",
+        //         optionText: [
+        //             "Shipments may move on different vessels",
+        //             "Consolidation and deconsolidation procedures at origin and destination ports take longer",
+        //             "Shipments may take different routes",
+        //             "All of the above"
 
-                ]
+        //         ]
+        //     }
+
+        // ]
+
+        const loadQuiz = async () => {
+            try {
+                const data = await QuizAPI.getQuiz(props.quizCode);
+
+                console.log(data);
+            } catch (err) {
+                console.log(err.response);
             }
+        }
 
-        ]
+        loadQuiz();
+
         const submitPayLoad = reactive({
             quizCode: props.quizCode,
             data: []

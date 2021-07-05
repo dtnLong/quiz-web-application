@@ -13,10 +13,10 @@
 
         
     </form>
-    <a href="#" class="inline-block py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" @click="authenticate">Start the quiz!</a>
+    <a href="#" class="inline-block py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isLoading}" @click="authenticate"> <div v-if="isLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div> Start the quiz!</a>
   </div>
   
-  <MainQuiz v-else/>
+  <MainQuiz :groupName="groupName" :quizCode="quizCode"  v-else/>
 </template>
 
 <script >
@@ -27,7 +27,8 @@ export default {
   components: {MainQuiz},
   
   setup() {
-    const isLogin = ref(true);
+    const isLogin = ref(false);
+    const isLoading = ref(false);
     const groupName = ref(null);
     const quizCode = ref(null);
     const error = ref(null);
@@ -40,16 +41,18 @@ export default {
       error.value= 'Quiz code is required!';
     }
     else{
+      isLoading.value = true;
       LoginAPI.auth({groupName:groupName.value, quizCode: quizCode.value})
       .then((response) => {
         if (response.data.success) {
           isLogin.value = true;
         }
-      }).catch(err => error.value = err.response.data.errors[0].message);
+        isLoading.value = false;
+      }).catch(err => {error.value = err.response.data.errors[0].message; isLoading.value = false});
     }
     }
 
-    return {authenticate, groupName, quizCode, error, isLogin}
+    return {authenticate, groupName, quizCode, error, isLogin, isLoading}
   }
 
 }
@@ -61,6 +64,9 @@ input::placeholder {
   font-size: 16px;
 
 }
+.loading{
+  @apply opacity-50;
+}
 
 input{
   @apply text-gray-700;
@@ -68,5 +74,21 @@ input{
 
 .form-container{
   backdrop-filter: blur(48px);
+}
+
+.loader {
+  border-top-color: #3498db;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
