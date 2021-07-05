@@ -12,5 +12,6 @@ import java.util.List;
 @ToString
 public class QuestionResponseFormat {
     private Long questionNumber;
+    private String questionText;
     private List<ChoiceResponseFormat> choices = new ArrayList<>();
 }

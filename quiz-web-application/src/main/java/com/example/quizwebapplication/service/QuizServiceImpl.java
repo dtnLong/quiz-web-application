@@ -36,6 +36,7 @@ public class QuizServiceImpl implements QuizService {
 
             if (i == unformattedQuiz.size() - 1 || !current.getQuestionNumber().equals(unformattedQuiz.get(i + 1).getQuestionNumber())) {
                 questionResponseFormat.setQuestionNumber(current.getQuestionNumber());
+                questionResponseFormat.setQuestionText(current.getQuestionChoice().getQuestion().getText());
                 quizFormat.getQuestions().add(questionResponseFormat);
                 questionResponseFormat = new QuestionResponseFormat();
             }
