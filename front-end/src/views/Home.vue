@@ -23,10 +23,15 @@
 import {ref, computed } from 'vue'
 import LoginAPI from '../services/LoginAPI'
 import MainQuiz from '../components/MainQuiz.vue'
+
 export default {
   components: {MainQuiz},
   
   setup() {
+
+   
+
+
     const isLogin = ref(false);
     const isLoading = ref(false);
     const groupName = ref(null);

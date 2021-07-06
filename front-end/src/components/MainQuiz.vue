@@ -19,7 +19,7 @@
 
             <!-- Option List --->
             <div class='flex flex-col w-9/12 gap-8 mx-auto my-12 px-14 '>
-                <Option v-for=" (option, index) in questions[currentQuestionIndex].optionText" :key="index" :optionText="option" :questionNumber="currentQuestionNumber.toString()" :optionIndex="index.toString()" :hasChecked="checkValue" @optionSelected ="handleSelected" />
+                <Option v-for=" (choiceText, index) in questions[currentQuestionIndex].choices" :key="index" :optionText="choiceText" :questionNumber="questions[currentQuestionIndex].questionNumber" :optionIndex="index.toString()" :hasChecked="checkValue" @optionSelected ="handleSelected" />
             </div>
             
 
@@ -55,46 +55,14 @@ export default {
         const isSubmitted = ref(false);
         const currentQuestionIndex = ref(0);
         
-        // const questions = [
-        //     {
-        //         questionText: "Why are LCL lead times longer than FCL lead times 1?",
-        //         optionText: [
-                    
-        //             "Shipments may move on different vessels",
-        //             "Consolidation and deconsolidation procedures at origin and destination ports take longer",
-        //             "Shipments may take different routes",
-        //             "All of the above"
-
-        //         ]
-        //     },
-        //     {
-        //         questionText: "Why are LCL lead times longer than FCL lead times 2?",
-        //         optionText: [
-        //             "Shipments may move on different vessels",
-        //             "Consolidation and deconsolidation procedures at origin and destination ports take longer",
-        //             "Shipments may take different routes",
-        //             "All of the above"
-
-        //         ]
-        //     },
-        //     {
-        //         questionText: "Why are LCL lead times longer than FCL lead times 3?",
-        //         optionText: [
-        //             "Shipments may move on different vessels",
-        //             "Consolidation and deconsolidation procedures at origin and destination ports take longer",
-        //             "Shipments may take different routes",
-        //             "All of the above"
-
-        //         ]
-        //     }
-
-        // ]
+        let questions = ref([]);
 
         const loadQuiz = async () => {
             try {
-                const data = await QuizAPI.getQuiz(props.quizCode);
+                const response = await QuizAPI.getQuiz(props.quizCode);
+                
+                questions.value = response.data.quiz.questions;
 
-                console.log(data);
             } catch (err) {
                 console.log(err.response);
             }
@@ -110,23 +78,23 @@ export default {
 
         const initSubmitPayload = () => {
             
-            questions.forEach((item, index) => {
+            questions.value.forEach((item, index) => {
                 submitPayLoad.data.splice(index, 0, {questionText: item.questionText, questionNumber: index+1, optionText: 'N/A', optionSelected: 'N/A'});
             });
 
             console.log(submitPayLoad);
         }
         
-        //Initialize the submit payload once questions are fetched.
+        //Initialize the submit payload once questions.value are fetched.
         initSubmitPayload();
 
 
         
-        const questionNumberList = ref(questions.map((element,index) => (
+        const questionNumberList = ref(questions.value.map((element,index) => (
             index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
             )));
         const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
-        const buttonText = computed(() => currentQuestionNumber.value === questions.length? "Go to Submit" : "Next question" );
+        const buttonText = computed(() => currentQuestionNumber.value === questions.value.length? "Go to Submit" : "Next question" );
     
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
@@ -198,7 +166,7 @@ export default {
 
             
 
-            if (currentQuestionIndex.value < (questions.length - 1) ){
+            if (currentQuestionIndex.value < (questions.value.length - 1) ){
 
                 // if (isSelected){
                 //     updateQuestionState('done');
