@@ -43,6 +43,7 @@ public class QuizServiceImplTemp {
 
     @Transactional
     public QuizFormat getQuizByCode(String quizCode, String groupName) {
+
         Sort sort = Sort.by("questionNumber").ascending();
         Optional<List<Quiz>> quiz = quizRepository.getQuizByQuizCode(quizCode, sort);
         if (quiz.isEmpty()) {

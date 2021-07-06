@@ -1,10 +1,7 @@
 package com.example.quizwebapplication.service;
 
-import com.example.quizwebapplication.dto.QuizFormat;
-import com.example.quizwebapplication.entity.Quiz;
-
-import java.util.List;
+import com.example.quizwebapplication.dto.GetQuizResponse;
 
 public interface QuizService {
-    QuizFormat getQuizByCode(String quizCode, String groupName);
+    GetQuizResponse getQuizByCode(String quizCode, String token);
 }

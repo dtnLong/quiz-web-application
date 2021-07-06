@@ -1,13 +1,17 @@
 package com.example.quizwebapplication.service;
 
 import com.example.quizwebapplication.dto.ChoiceResponseFormat;
+import com.example.quizwebapplication.dto.Error;
+import com.example.quizwebapplication.dto.GetQuizResponse;
 import com.example.quizwebapplication.dto.QuestionResponseFormat;
 import com.example.quizwebapplication.dto.QuizFormat;
 import com.example.quizwebapplication.entity.Quiz;
 import com.example.quizwebapplication.repository.LoginRepository;
+import com.example.quizwebapplication.repository.QuizCodeRepository;
 import com.example.quizwebapplication.repository.QuizRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +24,12 @@ import java.util.Optional;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
+    private final QuizCodeRepository quizCodeRepository;
+    private final AuthenticationService authenticationService;
+    private final LoginRepository loginRepository;
 
     private QuizFormat parseQuiz(List<Quiz> unformattedQuiz, String quizCode) {
+        // Parse quiz obtain from database to correct format
         QuizFormat quizFormat = new QuizFormat();
         QuestionResponseFormat questionResponseFormat = new QuestionResponseFormat();
         quizFormat.setCode(quizCode);
@@ -33,6 +41,7 @@ public class QuizServiceImpl implements QuizService {
             choiceResponseFormat.setChoiceText(current.getQuestionChoice().getChoice().getText());
             questionResponseFormat.getChoices().add(choiceResponseFormat);
 
+            // If at the end or next question is different, add the current question and its choice to quiz
             if (i == unformattedQuiz.size() - 1 || !current.getQuestionNumber().equals(unformattedQuiz.get(i + 1).getQuestionNumber())) {
                 questionResponseFormat.setQuestionNumber(current.getQuestionNumber());
                 questionResponseFormat.setQuestionText(current.getQuestionChoice().getQuestion().getText());
@@ -45,13 +54,63 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public QuizFormat getQuizByCode(String quizCode, String groupName) {
+    public GetQuizResponse getQuizByCode(String quizCode, String token) {
+        GetQuizResponse response = new GetQuizResponse();
+
+        // Handle quiz code don't exist
+        if (quizCodeRepository.findById(quizCode).isEmpty()) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.getErrors().add(new Error("not_found", "Quiz not found"));
+            response.setSuccess(false);
+            return response;
+        }
+
+        // Handle token not exist
+        if (token == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setSuccess(false);
+            response.getErrors().add(new Error("unauthorized", "Unauthorized access"));
+            return response;
+        }
+
+        // Handle invalid token
+        if (!authenticationService.verifyToken(token)) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setSuccess(false);
+            response.getErrors().add(new Error("unauthorized", "Invalid token"));
+            return response;
+        }
+
+        // Handle quiz code in token not matching requested quiz code
+        String quizCodeToken = (String) authenticationService.getCustomClaim(token, "quizCode");
+        if (!quizCode.equals(quizCodeToken)) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setSuccess(false);
+            response.getErrors().add(new Error("unauthorized", "Quiz code mismatch"));
+            return response;
+        }
+
+        // Handle expiration date
+        String groupName = (String) authenticationService.getCustomClaim(token, "groupName");
+        Optional<Date> startTime = loginRepository.findStartTimeByNameAndQuizCode(groupName, quizCode);
+        if (startTime.isPresent()) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setSuccess(false);
+            response.getErrors().add(new Error("started", "Group already start the quiz"));
+            return response;
+        }
+
+        // Retrieving quiz from database
         Sort sort = Sort.by("questionNumber").ascending();
         Optional<List<Quiz>> quiz = quizRepository.getQuizByQuizCode(quizCode, sort);
-        if (quiz.isEmpty()) {
-            return null;
-        }
-        QuizFormat quizResponse = parseQuiz(quiz.get(), quizCode);
-        return quizResponse;
+        response.setQuiz(parseQuiz(quiz.get(), quizCode));
+        response.setSuccess(true);
+        response.setStatus(HttpStatus.OK.value());
+
+        // Update quiz start time for group and quiz
+        Date date = new Date(System.currentTimeMillis());
+        loginRepository.updateStartTime(groupName, quizCode, date);
+
+        return response;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private String secretKey = "G+KbPdSgVkYp3s6v9y$B&E)H@McQfThW";
+    private final String secretKey = "G+KbPdSgVkYp3s6v9y$B&E)H@McQfThW";
 
     @Override
     public Object getCustomClaim(String token, String claimKey) {
@@ -33,8 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }
