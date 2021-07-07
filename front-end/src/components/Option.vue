@@ -17,51 +17,35 @@
 
 <script>
 
-import { computed, onMounted, onUpdated } from '@vue/runtime-core'
+import {  onMounted, onUpdated } from '@vue/runtime-core'
 export default {
     props: {
         optionText: String,
         questionNumber: String,
-        optionIndex: String,
+        option: String,
         hasChecked: String,  
-        modelValue: String },
+         },
     
     setup(props) {
-        const option = computed(()=> {
-            switch (props.optionIndex){
-                case "0":
-                    
-                    return "A";
-                case "1":
-                   
-                    return "B";
-                case "2":
-                   
-                    return "C";
-                case "3":
-                   
-                    return "D";
-
-            }
-        })
+        
         onUpdated(()=> {
-            if (props.hasChecked === option.value){
-                document.getElementById(`${option.value}`).checked = true;
+            if (props.hasChecked === props.option){
+                document.getElementById(`${props.option}`).checked = true;
             }else {
-                document.getElementById(`${option.value}`).checked = false;
+                document.getElementById(`${props.option}`).checked = false;
             }
         })
 
         onMounted(()=> {
-            if (props.hasChecked === option.value){
-                document.getElementById(`${option.value}`).checked = true;
+            if (props.hasChecked === props.option){
+                document.getElementById(`${props.option}`).checked = true;
             }else {
-                document.getElementById(`${option.value}`).checked = false;
+                document.getElementById(`${props.option}`).checked = false;
             }
         })
         
         
-        return{option}
+        return{}
     },
 }
 </script>

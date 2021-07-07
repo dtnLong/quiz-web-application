@@ -15,18 +15,44 @@
     </form>
     <a href="#" class="inline-block py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isLoading}" @click="authenticate"> <div v-if="isLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div> Start the quiz!</a>
   </div>
-  
-  <MainQuiz :groupName="groupName" :quizCode="quizCode"  v-else/>
+  <Suspense v-else>
+    <template #default>
+         <MainQuiz :groupName="groupName" :quizCode="quizCode"  />
+    </template>
+
+    <!-- Loading animation while waiting for API fetching  -->
+    <template #fallback>
+        <div class='w-1/4' id="loading-animation">
+
+        </div>
+    </template>
+</Suspense>
+ 
 </template>
 
 <script >
-import {ref, computed } from 'vue'
+import {ref, onMounted } from 'vue'
 import LoginAPI from '../services/LoginAPI'
 import MainQuiz from '../components/MainQuiz.vue'
+import lottie from "lottie-web";
+import LoadingAnimation from '../assets/loading-animation.json'
 export default {
   components: {MainQuiz},
   
   setup() {
+
+    onMounted(() => {
+      lottie.loadAnimation({
+                container: document.getElementById("loading-animation"), 
+                renderer: "svg",
+                loop: true,
+                autoplay: true,
+                //path: "https://assets7.lottiefiles.com/packages/lf20_xz75lvff.json",
+                animationData: LoadingAnimation,
+            })
+    })
+
+
     const isLogin = ref(false);
     const isLoading = ref(false);
     const groupName = ref(null);
