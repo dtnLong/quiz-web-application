@@ -1,21 +1,19 @@
 package com.example.quizwebapplication.service;
 
+import com.example.quizwebapplication.dto.*;
 import com.example.quizwebapplication.dto.Error;
-import com.example.quizwebapplication.dto.SaveAnswerRequest;
-import com.example.quizwebapplication.dto.SaveAnswerResponse;
 import com.example.quizwebapplication.entity.Answer;
 import com.example.quizwebapplication.entity.Group;
+import com.example.quizwebapplication.entity.Quiz;
 import com.example.quizwebapplication.entity.QuizCode;
-import com.example.quizwebapplication.repository.AnswerRepository;
-import com.example.quizwebapplication.repository.GroupRepository;
-import com.example.quizwebapplication.repository.LoginRepository;
-import com.example.quizwebapplication.repository.QuizCodeRepository;
+import com.example.quizwebapplication.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +24,15 @@ public class AnswerServiceImpl implements AnswerService {
     private final GroupRepository groupRepository;
     private final LoginRepository loginRepository;
     private final AuthenticationService authenticationService;
+    private final QuizRepository quizRepository;
+
+    private Map<Long, Quiz> mapQuizList(List<Quiz> quizCorrectAnswerList) {
+        Map<Long, Quiz> quizCorrectAnswerMap = new HashMap<>();
+        for (Quiz correctAnswer:quizCorrectAnswerList) {
+            quizCorrectAnswerMap.put(correctAnswer.getQuestionNumber(), correctAnswer);
+        }
+        return quizCorrectAnswerMap;
+    }
 
     @Transactional
     @Override
@@ -103,4 +110,65 @@ public class AnswerServiceImpl implements AnswerService {
         return response;
     }
 
+    @Transactional
+    @Override
+    public MarkingResponse markAnswer(String groupName) {
+        MarkingResponse response = new MarkingResponse();
+        response.setGroupName(groupName);
+        // Mark answer of latest quiz by group
+        Optional<Group> group = groupRepository.getGroupByName(groupName);
+        if (group.isEmpty()) {
+            response.setSuccess(false);
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.getErrors().add(new Error("not found", "Group name not found!"));
+            return response;
+        }
+        String quizCode = group.get().getQuizCode().getCode();
+        if (quizCode == null) {
+            response.setSuccess(false);
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.getErrors().add(new Error("not found", "Group haven't taken any quiz"));
+            return response;
+        }
+        response.setQuizCode(quizCode);
+
+        Sort sort = Sort.by("questionNumber").ascending();
+        Optional<List<Quiz>> quizCorrectAnswersList = quizRepository.getCorrectAnswerByQuizCode(quizCode, sort);
+        Optional<List<Answer>> groupAnswer = answerRepository.findAnswerByGroupNameAndQuizCode(groupName, quizCode);
+        Map<Long, Quiz> quizCorrectAnswersMap = mapQuizList(quizCorrectAnswersList.get());
+
+        // Begin marking
+        long score = 0;
+        for (Answer answer:groupAnswer.get()) {
+            ScoreResponseFormat scoreResponseFormat = new ScoreResponseFormat();
+            if (quizCorrectAnswersMap.get(answer.getQuestionNumber()) == null) {
+                response.setSuccess(false);
+                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                response.getErrors().add(new Error("internal server", "Question number not in quiz"));
+                response.setAnswerList(new ArrayList<>());
+                return response;
+            }
+            Long currentQuestion = answer.getQuestionNumber();
+            String answerChoice = answer.getAnswerChoice();
+            String correctChoice = quizCorrectAnswersMap.get(currentQuestion).getQuestionChoice().getOption();
+
+            scoreResponseFormat.setQuestionNumber(currentQuestion);
+            scoreResponseFormat.setProvidedAnswer(answerChoice);
+            scoreResponseFormat.setCorrectAnswer(correctChoice);
+            if (answerChoice != null && answerChoice.equals(correctChoice)) {
+                score++;
+                scoreResponseFormat.setCorrect(true);
+            } else {
+                scoreResponseFormat.setCorrect(false);
+            }
+            response.getAnswerList().add(scoreResponseFormat);
+        }
+
+        // Saving score
+        groupRepository.updateScore(groupName, score);
+        response.setScore(score);
+        response.setSuccess(true);
+        response.setStatus(HttpStatus.OK.value());
+        return response;
+    }
 }

@@ -22,4 +22,8 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     @Modifying
     @Query(value = "UPDATE Group G SET G.quizCode.code = :quizCode WHERE G.name = :name")
     void updateLatestQuiz(String quizCode, String name);
+
+    @Modifying
+    @Query(value = "UPDATE Group G SET G.score = :score WHERE G.name = :groupName")
+    void updateScore(String groupName, Long score);
 }

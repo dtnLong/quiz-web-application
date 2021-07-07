@@ -3,6 +3,7 @@ package com.example.quizwebapplication.controller;
 import com.example.quizwebapplication.dto.GetQuizResponse;
 import com.example.quizwebapplication.dto.SaveAnswerRequest;
 import com.example.quizwebapplication.dto.SaveAnswerResponse;
+import com.example.quizwebapplication.dto.MarkingResponse;
 import com.example.quizwebapplication.service.AnswerService;
 import com.example.quizwebapplication.service.QuizService;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,9 @@ public class QuizController {
         return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 
+    @GetMapping(value = "/api/test/quiz/mark/group/{groupName}")
+    public ResponseEntity<MarkingResponse> markAnswer(@PathVariable String groupName) {
+        MarkingResponse response = answerService.markAnswer(groupName);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
 }
