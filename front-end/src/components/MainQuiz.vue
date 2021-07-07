@@ -19,7 +19,7 @@
 
             <!-- Option List --->
             <div class='flex flex-col w-9/12 gap-8 mx-auto my-12 px-14 '>
-                <Option v-for=" (choiceText, index) in questions[currentQuestionIndex].choices" :key="index" :optionText="choiceText" :questionNumber="questions[currentQuestionIndex].questionNumber" :optionIndex="index.toString()" :hasChecked="checkValue" @optionSelected ="handleSelected" />
+                <Option v-for=" (choice, index) in questions[currentQuestionIndex].choices" :key="index" :optionText="choice.choiceText" :questionNumber="questions[currentQuestionIndex].questionNumber" :option="choice.option" :hasChecked="checkValue" @optionSelected ="handleSelected" />
             </div>
             
 
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+
+
 import {useRouter} from 'vue-router'
 import {computed, onMounted, ref, reactive, onUpdated, watchEffect} from 'vue'
 import TimeCount from "./TimeCount.vue"
@@ -45,31 +47,31 @@ import QuestNumber from "./QuestNumber.vue"
 import Option from "./Option.vue"
 import Submit from "./Submit.vue"
 import QuizAPI from "../services/QuizAPI"
+const loadQuiz = async (quizCode) => {
+            try {
+                const response = await QuizAPI.getQuiz(quizCode);
+                
+                return response.data.quiz.questions;
+
+            } catch (err) {
+                console.log(err.response);
+                return;
+            }
+}
 export default {
     components: {TimeCount, QuestNumber, Option, Submit},
     props: {
         quizCode: String,
         groupName: String,
         },
-    setup(props, context) {
+    async setup(props, context) {
+        const questions = await loadQuiz(props.quizCode);
         const isSubmitted = ref(false);
         const currentQuestionIndex = ref(0);
         
-        let questions = ref([]);
 
-        const loadQuiz = async () => {
-            try {
-                const response = await QuizAPI.getQuiz(props.quizCode);
-                
-                questions.value = response.data.quiz.questions;
-
-            } catch (err) {
-                console.log(err.response);
-            }
-        }
-
-        loadQuiz();
-
+        
+        console.log(questions);
         const submitPayLoad = reactive({
             quizCode: props.quizCode,
             data: []
@@ -78,7 +80,7 @@ export default {
 
         const initSubmitPayload = () => {
             
-            questions.value.forEach((item, index) => {
+            questions.forEach((item, index) => {
                 submitPayLoad.data.splice(index, 0, {questionText: item.questionText, questionNumber: index+1, optionText: 'N/A', optionSelected: 'N/A'});
             });
 
@@ -90,11 +92,11 @@ export default {
 
 
         
-        const questionNumberList = ref(questions.value.map((element,index) => (
+        const questionNumberList = ref(questions.map((element,index) => (
             index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
             )));
-        const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
-        const buttonText = computed(() => currentQuestionNumber.value === questions.value.length? "Go to Submit" : "Next question" );
+        //const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
+        const buttonText = computed(() => questions[currentQuestionIndex].questionNumber === questions.value.length? "Go to Submit" : "Next question" );
     
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
@@ -109,19 +111,9 @@ export default {
         const handleQuestionClick = (el) => {
             selectAns();
 
-            //TODO: refactor this
-            // if (isSelected){
-            //         updateQuestionState('done');
-            // }else{
-            //     updateQuestionState('default');
-            // }
-            
-            // let updateQuestionIndex = parseInt(el.innerText) - 1;
-            // currentQuestionIndex.value  = updateQuestionIndex;
+           
             currentQuestionIndex.value = parseInt(el.innerText) - 1;
-            // el.classList.add("active");
             
-            //questionNumberList.value[updateQuestionIndex].state = 'active';
             updateQuestionState('active');
 
         };
@@ -130,20 +122,7 @@ export default {
 
         const selectAns = () => {
            
-        //     if (document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`)){
-        //         //TODO: get the option select by the first character of the option text. 
-        //         let optionSelected = document.querySelector(`input[name = "question-${currentQuestionIndex.value+1}"]:checked`).value;
-                
-        //         let optionText = document.querySelector(`label[for="${optionSelected}"]`).innerText;
-        //         submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
-        // submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
-        //         updateQuestionState('done');
-
-        //     }else{
-        //         updateQuestionState('default');
-        //     }
-
-
+        
         if (optionSelected.value !== 'N/A'){
                 let optionText = document.querySelector(`label[for="${optionSelected.value}"]`).innerText;
                 submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected.value;
@@ -167,13 +146,7 @@ export default {
             
 
             if (currentQuestionIndex.value < (questions.value.length - 1) ){
-
-                // if (isSelected){
-                //     updateQuestionState('done');
-                // }else{
-                //     updateQuestionState('default');
-                // }
-                
+ 
                 currentQuestionIndex.value+=1; 
                 
                 updateQuestionState('active');
@@ -189,12 +162,6 @@ export default {
         const toPreviousQuestion = () => {
             selectAns();
             if (currentQuestionIndex.value > 0 ){
-
-                // if (isSelected){
-                //     updateQuestionState('done');
-                // }else{
-                //     updateQuestionState('default');
-                // }
                 
                 currentQuestionIndex.value-=1; 
                 
@@ -204,27 +171,9 @@ export default {
         }
 
         
-
-        // const addToSumbitPayLoad = ({optionSelected, optionText}) => {
-        
-        //     // let indexToAdd = questionNumber - 1;
-           
-        // //    if (submitPayLoad.data[currentQuestionIndex.value]){
-        // //        submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
-        // //    submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
-        // //    }
-        // //    else{
-        // //        submitPayLoad.data.splice(currentQuestionIndex.value, 0, {questionText, questionNumber, optionSelected, optionText});
-        // //    }
-
-        //   submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected;
-        // submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
-           
-
-        // }
         const checkValue = computed(() => {
-            
-            let answer  = submitPayLoad.data.find(answer => answer.questionNumber === currentQuestionNumber.value);
+           
+            // let answer  = submitPayLoad.data.find(answer => answer.questionNumber === questions[currentQuestionIndex].questionNumber);
            
             if (answer && answer.optionSelected){
                 return answer.optionSelected;
@@ -232,6 +181,8 @@ export default {
             }else{
                 return "init";
             }
+            
+           
             
         })
         
@@ -244,7 +195,7 @@ export default {
             isSubmitted.value = state;
         }
         
-        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, currentQuestionNumber, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected}
+        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected}
     },
 }
 </script>
