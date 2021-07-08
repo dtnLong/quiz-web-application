@@ -21,7 +21,7 @@ import {  onMounted, onUpdated } from '@vue/runtime-core'
 export default {
     props: {
         optionText: String,
-        questionNumber: String,
+        questionNumber: Number,
         option: String,
         hasChecked: String,  
          },

@@ -1,6 +1,9 @@
 <template>
-
-    <section v-if="!isSubmitted" class="relative z-10 w-full">
+    <p v-if="fetchMsg">{{fetchMsg}}</p>
+     <!-- Loading animation while waiting for API fetching  -->
+    <div v-if="questions.length < 25" class='w-1/4' id="loading-animation"></div>
+    <!-- Main Quiz -->
+    <section v-else-if="!isSubmitted && questions.length" class="relative z-10 w-full h-full pb-14">
         <!-- Time Countdown Animation ---->
         <TimeCount @toSubmit="toggleIsSubmitted"/>
         
@@ -11,7 +14,7 @@
 
 
         <!-- Question Section---->        
-         <div class="z-10 flex flex-col items-center w-9/12 mx-auto from-gray-300 pb-14 text-gray-50 rounded-xl bg-gradient-to-br to-gray-400 pt-9 form-container">
+         <div class="z-10 flex flex-col items-center w-9/12 mx-auto from-gray-300 pb-14 text-gray-50 rounded-xl h-[65vh] overflow-y-scroll bg-gradient-to-br to-gray-400 pt-9 form-container">
 
             <!-- Question --->
             <h1 class="text-3xl font-bold text-center select-none ">{{questions[currentQuestionIndex].questionText}}</h1>
@@ -33,8 +36,11 @@
 
     </section>
 
-    <Submit v-else :submitPayLoad="submitPayLoad" @backToQuiz="toggleIsSubmitted"/>
    
+
+
+    <Submit v-else :submitPayLoad="submitPayLoad" :formattedPayLoad="formattedPayLoad" @backToQuiz="toggleIsSubmitted"/>
+
 </template>
 
 <script>
@@ -47,56 +53,100 @@ import QuestNumber from "./QuestNumber.vue"
 import Option from "./Option.vue"
 import Submit from "./Submit.vue"
 import QuizAPI from "../services/QuizAPI"
-const loadQuiz = async (quizCode) => {
-            try {
-                const response = await QuizAPI.getQuiz(quizCode);
-                
-                return response.data.quiz.questions;
+import lottie from "lottie-web";
+import LoadingAnimation from '../assets/loading-animation.json'
 
-            } catch (err) {
-                console.log(err.response);
-                return;
-            }
-}
 export default {
     components: {TimeCount, QuestNumber, Option, Submit},
     props: {
         quizCode: String,
         groupName: String,
         },
-    async setup(props, context) {
-        const questions = await loadQuiz(props.quizCode);
+    setup(props, context) {
+        onMounted(() => {
+      lottie.loadAnimation({
+                container: document.getElementById("loading-animation"), 
+                renderer: "svg",
+                loop: true,
+                autoplay: true,
+                //path: "https://assets7.lottiefiles.com/packages/lf20_xz75lvff.json",
+                animationData: LoadingAnimation,
+            })
+    })
         const isSubmitted = ref(false);
         const currentQuestionIndex = ref(0);
-        
-
-        
-        console.log(questions);
         const submitPayLoad = reactive({
             quizCode: props.quizCode,
-            data: []
+            groupName: props.groupName,
+            answers: []
 
         })
+        const fetchMsg = ref(null);
+        const questions = ref([]);
+        const questionNumberList = ref([]);
+
+        const loadQuiz = async () => {
+            try {
+                let response = await QuizAPI.getQuiz(props.quizCode);
+               
+                
+                questions.value = response.data.quiz.questions;
+                console.log(questions.value)
+            //     questionNumberList.value = questions.value.map((element,index) => (
+            // index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
+            // ))
+
+                 //Initialize the submit payload once questions.value are fetched.
+                initSubmitPayload();
+
+            } catch (err) {
+                console.log(err.response);
+                fetchMsg.value = "Oops, something wrong with the server. Please refresh the page!"
+                
+            }
+        }
+        loadQuiz();
+
+        
+        
+
+        
+
+
+        
+        
+        
 
         const initSubmitPayload = () => {
             
-            questions.forEach((item, index) => {
-                submitPayLoad.data.splice(index, 0, {questionText: item.questionText, questionNumber: index+1, optionText: 'N/A', optionSelected: 'N/A'});
+            questions.value.forEach((item, index) => {
+                submitPayLoad.answers.splice(index, 0, {questionText: item.questionText, questionNumber: item.questionNumber, choiceText: 'N/A', answer: 'N/A'});
+                
+
+                if (index ===0){
+                    questionNumberList.value.push({number: (index+1).toString(), state:'active'});
+
+                }else{
+                    questionNumberList.value.push({number: (index+1).toString(), state:'default'});
+                }
+
+
+
+                
             });
+
+            
 
             console.log(submitPayLoad);
         }
         
-        //Initialize the submit payload once questions.value are fetched.
-        initSubmitPayload();
+       
 
 
         
-        const questionNumberList = ref(questions.map((element,index) => (
-            index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
-            )));
+        
         //const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
-        const buttonText = computed(() => questions[currentQuestionIndex].questionNumber === questions.value.length? "Go to Submit" : "Next question" );
+        const buttonText = computed(() => questions.value[currentQuestionIndex.value].questionNumber === questions.value.length? "Go to Submit" : "Next question" );
     
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
@@ -106,16 +156,13 @@ export default {
         const optionSelected = ref('N/A');
         const handleSelected = (option) => {
             optionSelected.value = option;
+            
         }
              
         const handleQuestionClick = (el) => {
             selectAns();
-
-           
             currentQuestionIndex.value = parseInt(el.innerText) - 1;
-            
             updateQuestionState('active');
-
         };
 
         
@@ -124,10 +171,10 @@ export default {
            
         
         if (optionSelected.value !== 'N/A'){
-                let optionText = document.querySelector(`label[for="${optionSelected.value}"]`).innerText;
-                submitPayLoad.data[currentQuestionIndex.value].optionSelected = optionSelected.value;
-                submitPayLoad.data[currentQuestionIndex.value].optionText = optionText;
-                
+                let choiceText = document.querySelector(`label[for="${optionSelected.value}"]`).innerText;
+                submitPayLoad.answers[currentQuestionIndex.value].answer = optionSelected.value;
+                submitPayLoad.answers[currentQuestionIndex.value].choiceText = choiceText;
+                console.log(submitPayLoad.answers[currentQuestionIndex.value]);
                 optionSelected.value = 'N/A';
                 updateQuestionState('done');
 
@@ -173,10 +220,10 @@ export default {
         
         const checkValue = computed(() => {
            
-            // let answer  = submitPayLoad.data.find(answer => answer.questionNumber === questions[currentQuestionIndex].questionNumber);
+            let answer  = submitPayLoad.answers.find(answer => answer.questionNumber === questions.value[currentQuestionIndex.value].questionNumber);
            
-            if (answer && answer.optionSelected){
-                return answer.optionSelected;
+            if (answer && answer.answer){
+                return answer.answer;
                 
             }else{
                 return "init";
@@ -194,8 +241,34 @@ export default {
             };
             isSubmitted.value = state;
         }
+
+        const formattedAnwser = () => {
+            return submitPayLoad.answers.map((item) => ({
+                answer: item.answer === 'N/A'? null: item.answer,
+                questionNumber: item.questionNumber
+            }))
+        }
+
+
+        const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
         
-        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected}
+
+        const submit = () => {
+            QuizAPI.submitQuiz(formattedPayLoad)
+            .then(response => console.log(response))
+            .catch(error => console.log(error.response))
+        }
+
+
+
+
+        window.onbeforeunload = confirmExit;
+        function confirmExit() {
+            submit();
+            return "Are you sure you want to exit?"
+        }
+        
+        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected, fetchMsg, formattedPayLoad}
     },
 }
 </script>

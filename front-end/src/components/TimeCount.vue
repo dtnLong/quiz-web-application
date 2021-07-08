@@ -20,7 +20,7 @@ export default {
     components: {LottieAnimation},
     setup(props, {emit}) {
 
-        const QUIZ_DURATION = ref(10); //in seconds
+        const QUIZ_DURATION = ref(3600); //in seconds
     
         const timeDisplay = computed(() => 
             `${parseInt(QUIZ_DURATION.value/60)}:${QUIZ_DURATION.value%60}s`

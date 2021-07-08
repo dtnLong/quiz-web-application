@@ -15,19 +15,11 @@
     </form>
     <a href="#" class="inline-block py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isLoading}" @click="authenticate"> <div v-if="isLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div> Start the quiz!</a>
   </div>
-  <Suspense v-else>
-    <template #default>
-         <MainQuiz :groupName="groupName" :quizCode="quizCode"  />
-    </template>
 
-    <!-- Loading animation while waiting for API fetching  -->
-    <template #fallback>
-        <div class='w-1/4' id="loading-animation">
-
-        </div>
-    </template>
-</Suspense>
  
+  <MainQuiz :groupName="groupName" :quizCode="quizCode" v-else  />
+
+  
 </template>
 
 <script >
