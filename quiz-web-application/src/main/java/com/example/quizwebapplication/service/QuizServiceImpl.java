@@ -101,7 +101,7 @@ public class QuizServiceImpl implements QuizService {
         }
 
         // Retrieving quiz from database
-        Sort sort = Sort.by("questionNumber").ascending();
+        Sort sort = Sort.by("questionNumber").ascending().and(Sort.by("questionChoice.option"));
         Optional<List<Quiz>> quiz = quizRepository.getQuizByQuizCode(quizCode, sort);
         response.setQuiz(parseQuiz(quiz.get(), quizCode));
         response.setSuccess(true);
