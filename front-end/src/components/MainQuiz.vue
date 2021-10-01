@@ -1,36 +1,57 @@
 <template>
     <p v-if="fetchMsg">{{fetchMsg}}</p>
      <!-- Loading animation while waiting for API fetching  -->
-    <div v-if="questions.length < 25" class='w-1/4' id="loading-animation"></div>
+    <div v-else-if="questions.length < 25" class='w-1/4 mx-auto my-0' id="loading-animation"></div>
     <!-- Main Quiz -->
-    <section v-else-if="!isSubmitted && questions.length" class="relative z-10 w-full h-full pb-14">
-        <!-- Time Countdown Animation ---->
-        <TimeCount @toSubmit="toggleIsSubmitted"/>
+    <section v-else-if="!isSubmitted && questions.length" class="w-full min-h-screen">
+        <!-- Top Navigation -->
+        <nav class='flex items-center justify-between w-full px-20 pt-11'>
+           <img src="../assets/logis-base-logo.png" class="inline-block w-24 " alt="the-logisticom-logo">
+            <!-- Time Countdown Animation ---->
+            <TimeCount @toSubmit="submit"/>
+            <button @click.prevent="submit" class="flex items-center gap-2 py-3 text-base font-bold text-white rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600">Submit <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+        </nav>
+       
         
         <!-- Question Number List ---->
-        <div class="flex justify-center gap-4 mb-10">
-            <QuestNumber v-for="questionItem in questionNumberList" :key="questionItem.number" :number="questionItem.number" @clickQuestion="handleQuestionClick" :state="questionItem.state"/>
+        <div class="flex flex-wrap items-center px-20 mt-8 mb-10 gap-x-9 gap-y-4 ">
+            <QuestNumber v-for="questionItem in questionNumberList" :key="questionItem.number" :number="questionItem.number" @clickQuestion="handleQuestionClick" :isActive="questionItem.number == (currentQuestionIndex + 1)" :isDone="submitPayLoad.answers[questionItem.number-1].answer !== 'N/A'"/>
         </div>
 
 
         <!-- Question Section---->        
-         <div class="z-10 flex flex-col items-center w-9/12 mx-auto from-gray-300 pb-14 text-gray-50 rounded-xl h-[65vh] overflow-y-scroll bg-gradient-to-br to-gray-400 pt-9 form-container">
+         <div class="flex flex-col items-center w-full h-auto min-h-screen py-20 text-gray-900 rounded-5xl bg-form-bg form-container" style="border-radius: 80px 80px 0 0">
+             
 
-            <!-- Question --->
-            <h1 class="text-3xl font-bold text-center select-none ">{{questions[currentQuestionIndex].questionText}}</h1>
+
+             <div class="relative w-8/12">
+             <svg class="absolute transform -translate-y-1/2 cursor-pointer top-1/2 back-question -left-40"  @click="toPreviousQuestion" width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M38.5 52.5L28 42L38.5 52.5ZM28 42L38.5 31.5L28 42ZM28 42H56H28ZM10.5 42C10.5 37.8634 11.3148 33.7672 12.8978 29.9455C14.4808 26.1237 16.8011 22.6512 19.7261 19.7261C22.6512 16.8011 26.1237 14.4808 29.9455 12.8978C33.7672 11.3148 37.8634 10.5 42 10.5C46.1366 10.5 50.2328 11.3148 54.0545 12.8978C57.8763 14.4808 61.3488 16.8011 64.2739 19.7261C67.1989 22.6512 69.5192 26.1237 71.1022 29.9455C72.6852 33.7672 73.5 37.8634 73.5 42C73.5 50.3543 70.1813 58.3665 64.2739 64.2739C58.3665 70.1813 50.3543 73.5 42 73.5C33.6457 73.5 25.6335 70.1813 19.7261 64.2739C13.8187 58.3665 10.5 50.3543 10.5 42V42Z" stroke="#757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+            <svg class="absolute transform -translate-y-1/2 cursor-pointer top-1/2 next-question -right-40" @click="toNextQuestion"  width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="next-question">
+                <path id="Vector" d="M45.5 31.5L56 42L45.5 31.5ZM56 42L45.5 52.5L56 42ZM56 42H28H56ZM73.5 42C73.5 46.1366 72.6852 50.2328 71.1022 54.0545C69.5192 57.8763 67.1989 61.3488 64.2739 64.2739C61.3488 67.1989 57.8763 69.5192 54.0545 71.1022C50.2328 72.6852 46.1366 73.5 42 73.5C37.8634 73.5 33.7672 72.6852 29.9455 71.1022C26.1237 69.5192 22.6512 67.1989 19.7261 64.2739C16.8011 61.3488 14.4808 57.8763 12.8978 54.0545C11.3148 50.2328 10.5 46.1366 10.5 42C10.5 33.6457 13.8187 25.6335 19.7261 19.7261C25.6335 13.8187 33.6457 10.5 42 10.5C50.3543 10.5 58.3665 13.8187 64.2739 19.7261C70.1813 25.6335 73.5 33.6457 73.5 42Z" stroke="#757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+            </svg>
+                 <!-- Question --->
+                <h1 class="mb-12 text-xl font-semibold leading-8 whitespace-pre-line select-none"> Question {{currentQuestionIndex +1}}: {{questions[currentQuestionIndex].questionText}}</h1>
+                
+
+                <!-- Option List --->
+                <div class='flex flex-col gap-5 '>
+                    <Option v-for=" (choice, index) in questions[currentQuestionIndex].choices" :key="index" :optionText="choice.choiceText" :questionNumber="questions[currentQuestionIndex].questionNumber" :option="choice.option" :hasChecked="submitPayLoad.answers[currentQuestionIndex].answer == choice.option" @optionSelected ="handleSelected" />
+                </div>
+             </div>
+            
+            
             
 
-            <!-- Option List --->
-            <div class='flex flex-col w-9/12 gap-8 mx-auto my-12 px-14 '>
-                <Option v-for=" (choice, index) in questions[currentQuestionIndex].choices" :key="index" :optionText="choice.choiceText" :questionNumber="questions[currentQuestionIndex].questionNumber" :option="choice.option" :hasChecked="checkValue" @optionSelected ="handleSelected" />
-            </div>
-            
-
-            <div class='flex items-center gap-14'>
-                <a href="#"  @click="toPreviousQuestion" class='text-xl px-7 opacity-80'>Previous question</a>
+            <!-- <div class='flex items-center gap-14'>
+                <a href="#"  class='text-xl px-7 opacity-80'>Previous question</a>
                 <a href="#" @click="toNextQuestion" class="inline-block py-3 text-xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600 ">{{buttonText}}</a>
             </div>
-            
+             -->
         </div>
 
 
@@ -39,7 +60,7 @@
    
 
 
-    <Submit v-else :submitPayLoad="submitPayLoad" :formattedPayLoad="formattedPayLoad" @backToQuiz="toggleIsSubmitted"/>
+    <Submit v-else :submitPayLoad="submitPayLoad" @backToQuiz="toggleIsSubmitted"/>
 
 </template>
 
@@ -85,19 +106,46 @@ export default {
         const questions = ref([]);
         const questionNumberList = ref([]);
 
+        const initSubmitPayload = () => {
+            
+            questions.value.forEach((item, index) => {
+                submitPayLoad.answers.splice(index, 0, {questionText: item.questionText, questionNumber: item.questionNumber, choiceText: 'N/A', answer: 'N/A'});
+                
+
+                if (index ===0){
+                    questionNumberList.value.push({number: (index+1), state:'active'});
+
+                }else{
+                    questionNumberList.value.push({number: (index+1), state:'default'});
+                }
+
+
+
+                
+            });
+
+            
+
+            console.log(submitPayLoad);
+        }
+
         const loadQuiz = async () => {
             try {
                 let response = await QuizAPI.getQuiz(props.quizCode);
-               
-                
                 questions.value = response.data.quiz.questions;
-                console.log(questions.value)
+                
+                //Test with local server
+            //    let response = await QuizAPI.getLocalQuiz();
+            //    questions.value = response.questions;
+                
+                
             //     questionNumberList.value = questions.value.map((element,index) => (
             // index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
             // ))
 
                  //Initialize the submit payload once questions.value are fetched.
                 initSubmitPayload();
+                
 
             } catch (err) {
                 console.log(err.response);
@@ -117,28 +165,7 @@ export default {
         
         
 
-        const initSubmitPayload = () => {
-            
-            questions.value.forEach((item, index) => {
-                submitPayLoad.answers.splice(index, 0, {questionText: item.questionText, questionNumber: item.questionNumber, choiceText: 'N/A', answer: 'N/A'});
-                
-
-                if (index ===0){
-                    questionNumberList.value.push({number: (index+1).toString(), state:'active'});
-
-                }else{
-                    questionNumberList.value.push({number: (index+1).toString(), state:'default'});
-                }
-
-
-
-                
-            });
-
-            
-
-            console.log(submitPayLoad);
-        }
+        
         
        
 
@@ -148,14 +175,18 @@ export default {
         //const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
         const buttonText = computed(() => questions.value[currentQuestionIndex.value].questionNumber === questions.value.length? "Go to Submit" : "Next question" );
     
+        //Change style of the question
         const updateQuestionState = (updateState) => {
             questionNumberList.value[currentQuestionIndex.value].state = updateState;
         }
         
         //handle any option selecting event change.
-        const optionSelected = ref('N/A');
-        const handleSelected = (option) => {
-            optionSelected.value = option;
+        const answer = ref('N/A');
+        const handleSelected = (selection) => {
+            // console.log(selection);
+            answer.value = selection;
+            submitPayLoad.answers[currentQuestionIndex.value].answer = answer.value.option;
+                    submitPayLoad.answers[currentQuestionIndex.value].choiceText =answer.value.optionText;
             
         }
              
@@ -166,29 +197,28 @@ export default {
         };
 
         
-
+        //Save selected option to payload
         const selectAns = () => {
-           
-        
-        if (optionSelected.value !== 'N/A'){
-                let choiceText = document.querySelector(`label[for="${optionSelected.value}"]`).innerText;
-                submitPayLoad.answers[currentQuestionIndex.value].answer = optionSelected.value;
-                submitPayLoad.answers[currentQuestionIndex.value].choiceText = choiceText;
-                console.log(submitPayLoad.answers[currentQuestionIndex.value]);
-                optionSelected.value = 'N/A';
-                updateQuestionState('done');
+            if (answer.value !== 'N/A'){
+                    console.log(answer.value);
+                    // let choiceText = document.querySelector(`label[for="${answer.value}"]`).innerText;
+                    submitPayLoad.answers[currentQuestionIndex.value].answer = answer.value.option;
+                    submitPayLoad.answers[currentQuestionIndex.value].choiceText =answer.value.optionText;
+                    console.log(submitPayLoad.answers[currentQuestionIndex.value]);
+                    answer.value = 'N/A';
+                    updateQuestionState('done');
 
-            }else{
-                updateQuestionState('default');
+                }else{
+                    updateQuestionState('default');
             }
-            
+                
             
             
         }
 
 
         const toNextQuestion = () => {
-            selectAns();
+            //selectAns();
 
             
 
@@ -217,29 +247,36 @@ export default {
             
         }
 
-        
-        const checkValue = computed(() => {
+        //Check if the option is already selected
+        // const hasAlreadyChecked = computed(() => {
            
-            let answer  = submitPayLoad.answers.find(answer => answer.questionNumber === questions.value[currentQuestionIndex.value].questionNumber);
+        //     // let answer  = submitPayLoad.answers.find(answer => answer.questionNumber === questions.value[currentQuestionIndex.value].questionNumber);
            
-            if (answer && answer.answer){
-                return answer.answer;
+        //     // if (answer && answer.answer){
+        //     //     return answer.answer;
                 
-            }else{
-                return "init";
-            }
+        //     // }else{
+        //     //     return "init";
+        //     // }
+
+        //     // if( ){
+        //     //     return submitPayLoad.
+        //     // }
+            
+
+            
             
            
             
-        })
+        // })
         
         
         const toggleIsSubmitted = (state) => {
-            if (state) {
-                selectAns();
+            // if (state) {
+            //     selectAns();
                 
-            };
-            isSubmitted.value = state;
+            // };
+            isSubmitted.value = true;
         }
 
         const formattedAnwser = () => {
@@ -250,14 +287,21 @@ export default {
         }
 
 
-        const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
+        
         
 
         const submit = () => {
+            const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
             QuizAPI.submitQuiz(formattedPayLoad)
-            .then(response => console.log(response))
+            .then(response => {
+                console.log(response);
+                isSubmitted.value = true;
+
+                })
             .catch(error => console.log(error.response))
         }
+
+    
 
 
 
@@ -268,7 +312,7 @@ export default {
             return "Are you sure you want to exit?"
         }
         
-        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, checkValue, buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected, fetchMsg, formattedPayLoad}
+        return{handleQuestionClick, questions, currentQuestionIndex, selectAns, toNextQuestion, toPreviousQuestion, questionNumberList, /*checkValue,*/ buttonText, isSubmitted, submitPayLoad, toggleIsSubmitted, handleSelected, fetchMsg, submit}
     },
 }
 </script>

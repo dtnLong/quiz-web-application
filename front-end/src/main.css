@@ -2,8 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
+  html,
+  body {
+    height: 100%;
+  }
   #app {
-    height: 100vh;
-    max-height: 200vh;
+    /* height: 100vh; */
+    /* max-height: 200vh; */
+    height: 100%;
+    min-height: 100vh;
+  }
+}
+@layer utilities {
+  .selected {
+    @apply bg-error-500;
+    @apply border-error-500;
+    color: white;
+  }
+  p {
+    @apply leading-8;
   }
 }

@@ -1,10 +1,8 @@
 <template>
 
-    <div class="flex items-center justify-center" >
-        <div class="z-10 w-20 text-red-200" id="hour-glass-animation">
-       
-    </div>
-    <p class="relative text-2xl font-bold text-red-200 transform -translate-x-1/4">{{timeDisplay}}</p>
+    <div class="flex items-center justify-center gap-8" >
+        <div class="w-10 text-error-800" id="hour-glass-animation"></div>
+        <p class="relative text-4xl font-bold tracking-wide transform text-error-800 -translate-x-1/4">{{timeDisplay}}</p>
     </div>
     
 
@@ -18,9 +16,10 @@ import {onMounted, ref, computed} from 'vue';
 import  AnimationData from '../assets/hour-glass-animation.json';
 export default {
     components: {LottieAnimation},
+    emits: ['toSubmit'],
     setup(props, {emit}) {
 
-        const QUIZ_DURATION = ref(3600); //in seconds
+        const QUIZ_DURATION = ref(4800); //in seconds
     
         const timeDisplay = computed(() => 
             `${parseInt(QUIZ_DURATION.value/60)}:${QUIZ_DURATION.value%60}s`

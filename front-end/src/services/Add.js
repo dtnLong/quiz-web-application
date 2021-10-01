@@ -143,7 +143,7 @@ const data = {
         },
         {
             questionNumber: 6,
-			questionText: "Company A wants to calculate CLV (Customer Lifetime Value) with following information:\n-Total sales revenue(annual): $1,000,000\n-Total number of orders (annual): 40,000\n-Total number of unique(annual):15,000\n-Cost of goods sold: $470,000 (Beginning inventory: $180,000 ; Ending inventory: $160,000 ; Additional Purchases: $450,000)\n-Customer churn rate: 60%\nWhat is the CLV of Company A? Given: CLV= AOV x F x GM x (1/R)",
+			questionText: "Company A wants to calculate CLV (Customer Lifetime Value) with following information:\n-Total sales revenue(annual): $1,000,000\n-Total number of orders (annual): 40,000\n-Total number of unique(annual):15,000\n-Cost of goods sold: $470,000 (Beginning inventory: $180,000 ; Ending inventory: $160,000 ; Additional Purchases: $450,000)\n-Customer churn rate: 60%\nWhat is the \"CLV\" of Company A? \nGiven: CLV= AOV x F x GM x (1/R)",
 			choices: [
 				{
 					option: "A",
@@ -675,7 +675,7 @@ const data = {
         },
         {
             questionNumber: 25,
-			questionText: "The company A wants to calculate quarterly churn rate to measure how many of its customers leave within a specific period of time:\nMonth 1: Company A has 1,500 customers at the beginning of the month and 90 churn during the month, leaving 1,410 customers at the end (refer to this as Cohort A). There are 200 new sales during the month.\nMonth 2: Of the 1490 customers in Cohort A, another 100 churn, leaving 1390. Of 200 in Cohort B, 15 churn, leaving 185. There are another 200 new sales this month (call this Cohort C).\n Month 3: Of the 1390 customers still in Cohort A, another 90 churn, leaving 1300. Of the 185 customers in Cohort B, 10 more churn, leaving 175. Of the 200 customers in Cohort C, 30 churn, leaving 170.\nWhat is Company A’s quarterly customer churn rate? Given: Customer Churn Rate = (customer at start of quarter - customers at the end of quarter)/ customers at start of quarter.",
+			questionText: "The company A wants to calculate quarterly churn rate to measure how many of its customers leave within a specific period of time:\nMonth 1: Company A has 1,500 customers at the beginning of the month and 90 churn during the month, leaving 1,410 customers at the end (refer to this as Cohort A). There are 200 new sales during the month.\nMonth 2: Of the 1490 customers in Cohort A, another 100 churn, leaving 1390. Of 200 in Cohort B, 15 churn, leaving 185. There are another 200 new sales this month (call this Cohort C).\n Month 3: Of the 1390 customers still in Cohort A, another 90 churn, leaving 1300. Of the 185 customers in Cohort B, 10 more churn, leaving 175. Of the 200 customers in Cohort C, 30 churn, leaving 170.\nWhat is Company A’s quarterly customer churn rate?\nGiven: Customer Churn Rate = (customer at start of quarter - customers at the end of quarter)/ customers at start of quarter.",
 			choices: [
 				{
 					option: "A",
@@ -714,3 +714,4 @@ export default{
    
 	}
 }
+export {data};

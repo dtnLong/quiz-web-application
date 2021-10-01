@@ -1,22 +1,26 @@
 <template>
-  <div v-if="!isLogin" class="absolute z-10 flex flex-col items-center w-7/12 from-gray-300 pb-14 text-gray-50 rounded-xl bg-gradient-to-br to-gray-400 pt-9 form-container">
-    <h1 class="mb-10 text-5xl font-bold">Round 1 Quiz</h1>
-    <p v-if="error" class="font-semibold text-red-700">{{error}}</p>
-    <form class="w-1/2">
-      <div class='mb-8'>
-        <label for="group" class='text-xl font-semibold '>Group Name:</label>
-        <input class="block w-full px-8 py-4 mt-2 bg-white rounded-full" id="group" type="text" placeholder="group123" v-model ="groupName">
-      </div>
-      <div  class='mb-12'>
-        <label for="code" class='text-xl font-semibold '>Quiz Code:</label>
-        <input class="block w-full px-8 py-4 mt-2 bg-white rounded-full" type="text" placeholder='quiz01' v-model="quizCode"></div>
+  <section v-if="!isLogin" class="relative grid w-full h-screen place-items-center">
+    <img src="../assets/logis-base-logo.png" class="absolute w-40 top-11" alt="the-logisticom-logo">
+    <div class="flex flex-col items-center w-8/12 pb-14 text-gray-50 rounded-xl bg-form-bg pt-9">
+      <h1 class="mt-16 mb-8 text-5xl font-bold text-error-500">Round 1 Quiz</h1>
+      <p v-if="error" class="font-semibold text-red-700">{{error}}</p>
+      <form class="w-4/6">
+        <div class='mb-8'>
+          <label for="group" class='text-xl font-medium text-gray-700 '>Group Name:</label>
+          <input class="block w-full px-8 py-4 mt-2 text-gray-900 rounded-full bg-input-bg" id="group" type="text" placeholder="group123" v-model ="groupName">
+        </div>
+        <div  class='mb-12'>
+          <label for="code" class='text-xl font-medium text-gray-700 '>Quiz Code:</label>
+          <input class="block w-full px-8 py-4 mt-2 text-gray-900 rounded-full bg-input-bg" type="text" placeholder='quiz01' v-model="quizCode"></div>
 
-        
-    </form>
-    <a href="#" class="inline-block py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isLoading}" @click="authenticate"> <div v-if="isLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div> Start the quiz!</a>
-  </div>
-
- 
+          
+      </form>
+      <a href="#" class="flex items-center gap-4 py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isLoading}" @click="authenticate"> <div v-if="isLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div> Start the quiz!
+      <svg width="32px" height="32px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></a>
+      <p class="mt-3 text-xs text-gray-700 ">Forgot your quiz code? Please contact <a href="#" class="italic underline">thelogisticom@gmail.com</a>to retrieve another one</p>
+    </div>
+  </section>
+  
   <MainQuiz :groupName="groupName" :quizCode="quizCode" v-else  />
 
   
@@ -86,16 +90,11 @@ input::placeholder {
   @apply opacity-50;
 }
 
-input{
-  @apply text-gray-700;
-}
 
-.form-container{
-  backdrop-filter: blur(48px);
-}
+
 
 .loader {
-  border-top-color: #3498db;
+  border-top-color: #fda95b;
   -webkit-animation: spinner 1.5s linear infinite;
   animation: spinner 1.5s linear infinite;
 }

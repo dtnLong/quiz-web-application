@@ -1,5 +1,5 @@
 <template>
-    <main class="relative grid w-full h-full bg-cover place-items-center main-bg">
+    <main class="grid h-auto min-h-screen main-bg place-items-center">
               
         <!------ Login Form ----->
         <router-view/>
@@ -27,31 +27,8 @@ import { onMounted } from '@vue/runtime-core';
 
 <style scoped>
     .main-bg{
-        background: url('./assets/background.svg') center center no-repeat;
-        background-size: cover;
+        background: linear-gradient(270deg, #FF9A9E 0%, #FAD0C4 100%);
     }
-    .color{
-        animation: blob 4s infinite;
-        
-    }
-    .animation-delay-200{
-        animation-delay: 3s;
-    }
-    /* @keyframes blob {
-        0%{
-           transform: scale(1);
-        }
-
-        50%{
-            transform: scale(1.3);
-        }
-
-        70%{
-            transform: scale(0.7);
-        }
-
-        100%{
-            transform: scale(1);
-        }
-    } */
+    
+   
 </style>

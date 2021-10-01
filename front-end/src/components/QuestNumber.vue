@@ -1,5 +1,5 @@
 <template>
-  <p @click="sendClick" :class="{default: state === 'default', active: state === 'active', done: state === 'done'}" class="default" :id="number">
+  <p @click="sendClick" class="flex items-center justify-center font-bold text-gray-700 border-2 border-gray-700 rounded-full cursor-pointer w-9 h-9" :class="{active: isActive, done: isDone && !isActive}" :id="number">
       {{number}}
   </p>
 </template>
@@ -8,11 +8,9 @@
 import {ref } from 'vue'
   export default{
     props: {
-      state: {
-        default: 'default',
-        type: String,
-      },
-      number: String,
+      isDone: Boolean,
+      isActive: Boolean,
+      number: Number,
     },
 
     setup(props,{emit}){
@@ -27,14 +25,14 @@ import {ref } from 'vue'
 </script>
 <style scoped>
   .default{
-    @apply w-7 h-7 flex items-center justify-center font-bold rounded-full border border-gray-400 text-gray-400 cursor-pointer;
+    @apply w-9 h-9 flex items-center justify-center font-bold rounded-full border-2 border-gray-700 text-gray-700 cursor-pointer;
   }
 
   .active{
-    @apply w-7 h-7 flex items-center justify-center font-bold rounded-full border border-gray-400 text-white bg-white bg-opacity-50 cursor-pointer;
+    @apply w-9 h-9 flex items-center justify-center font-bold rounded-full border-none bg-error-900 text-white  cursor-pointer;
   }
   .done{
-    @apply w-7 h-7 flex items-center justify-center font-bold rounded-full border border-gray-400 text-gray-400 opacity-70 line-through cursor-pointer;
+    @apply w-9 h-9 flex items-center justify-center font-bold rounded-full border-2 border-gray-700 text-gray-700 opacity-50 line-through cursor-pointer;
   }
 </style>
 
