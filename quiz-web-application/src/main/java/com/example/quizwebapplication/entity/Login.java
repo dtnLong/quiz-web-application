@@ -23,9 +23,9 @@ public class Login {
     @JoinColumn(nullable = false, name = "group_id", referencedColumnName = "id")
     private Group group;
 
-    @ManyToOne(targetEntity = QuizCode.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "quiz_code", referencedColumnName = "code")
-    private QuizCode quizCode;
+    @ManyToOne(targetEntity = QuizEncode.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "quiz_encode", referencedColumnName = "encode")
+    private QuizEncode quizEncode;
 
     @Column
     private boolean expired = false;
@@ -41,11 +41,11 @@ public class Login {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Login login = (Login) o;
-        return expired == login.expired && Objects.equals(id, login.id) && Objects.equals(group, login.group) && Objects.equals(quizCode, login.quizCode);
+        return expired == login.expired && submitted == login.submitted && Objects.equals(id, login.id) && Objects.equals(group, login.group) && Objects.equals(quizEncode, login.quizEncode) && Objects.equals(startTime, login.startTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, group, quizCode, expired);
+        return Objects.hash(id, group, quizEncode, expired, submitted, startTime);
     }
 }

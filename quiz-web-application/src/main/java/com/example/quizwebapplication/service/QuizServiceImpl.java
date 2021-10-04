@@ -6,8 +6,10 @@ import com.example.quizwebapplication.dto.GetQuizResponse;
 import com.example.quizwebapplication.dto.QuestionResponseFormat;
 import com.example.quizwebapplication.dto.QuizFormat;
 import com.example.quizwebapplication.entity.Quiz;
+import com.example.quizwebapplication.entity.QuizEncode;
 import com.example.quizwebapplication.repository.LoginRepository;
 import com.example.quizwebapplication.repository.QuizCodeRepository;
+import com.example.quizwebapplication.repository.QuizEncodeRepository;
 import com.example.quizwebapplication.repository.QuizRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -27,6 +29,7 @@ public class QuizServiceImpl implements QuizService {
     private final QuizCodeRepository quizCodeRepository;
     private final AuthenticationService authenticationService;
     private final LoginRepository loginRepository;
+    private final QuizEncodeRepository quizEncodeRepository;
 
     private QuizFormat parseQuiz(List<Quiz> unformattedQuiz, String quizCode) {
         // Parse quiz obtain from database to correct format
@@ -54,8 +57,17 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public GetQuizResponse getQuizByCode(String quizCode, String token) {
+    public GetQuizResponse getQuizByCode(String quizEncode, String token) {
         GetQuizResponse response = new GetQuizResponse();
+        Optional<QuizEncode> quizEncodeResult = quizEncodeRepository.findById(quizEncode);
+        // Get quiz code from quiz encode
+        if (quizEncodeResult.isEmpty()) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.getErrors().add(new Error("not_found", "Quiz not found"));
+            response.setSuccess(false);
+            return response;
+        }
+        String quizCode = quizEncodeResult.get().getQuizCode().getCode();
 
         // Handle quiz code don't exist
         if (quizCodeRepository.findById(quizCode).isEmpty()) {
@@ -83,16 +95,16 @@ public class QuizServiceImpl implements QuizService {
 
         // Handle quiz code in token not matching requested quiz code
         String quizCodeToken = (String) authenticationService.getCustomClaim(token, "quizCode");
-        if (!quizCode.equals(quizCodeToken)) {
+        if (!quizEncode.equals(quizCodeToken)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setSuccess(false);
-            response.getErrors().add(new Error("unauthorized", "Quiz code mismatch"));
+            response.getErrors().add(new Error("unauthorized", "Quiz encode mismatch"));
             return response;
         }
 
         // Handle expiration date
         String groupName = (String) authenticationService.getCustomClaim(token, "groupName");
-        Optional<Date> startTime = loginRepository.findStartTimeByNameAndQuizCode(groupName, quizCode);
+        Optional<Date> startTime = loginRepository.findStartTimeByNameAndQuizCode(groupName, quizEncode);
         if (startTime.isPresent()) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setSuccess(false);
@@ -103,7 +115,7 @@ public class QuizServiceImpl implements QuizService {
         // Retrieving quiz from database
         Sort sort = Sort.by("questionNumber").ascending().and(Sort.by("questionChoice.option"));
         Optional<List<Quiz>> quiz = quizRepository.getQuizByQuizCode(quizCode, sort);
-        response.setQuiz(parseQuiz(quiz.get(), quizCode));
+        response.setQuiz(parseQuiz(quiz.get(), quizEncode));
         response.setSuccess(true);
         response.setStatus(HttpStatus.OK.value());
 

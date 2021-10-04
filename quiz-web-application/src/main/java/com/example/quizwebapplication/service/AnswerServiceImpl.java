@@ -2,10 +2,7 @@ package com.example.quizwebapplication.service;
 
 import com.example.quizwebapplication.dto.*;
 import com.example.quizwebapplication.dto.Error;
-import com.example.quizwebapplication.entity.Answer;
-import com.example.quizwebapplication.entity.Group;
-import com.example.quizwebapplication.entity.Quiz;
-import com.example.quizwebapplication.entity.QuizCode;
+import com.example.quizwebapplication.entity.*;
 import com.example.quizwebapplication.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -25,6 +22,7 @@ public class AnswerServiceImpl implements AnswerService {
     private final LoginRepository loginRepository;
     private final AuthenticationService authenticationService;
     private final QuizRepository quizRepository;
+    private final QuizEncodeRepository quizEncodeRepository;
 
     private Map<Long, Quiz> mapQuizList(List<Quiz> quizCorrectAnswerList) {
         Map<Long, Quiz> quizCorrectAnswerMap = new HashMap<>();
@@ -38,7 +36,16 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public SaveAnswerResponse saveAnswers(SaveAnswerRequest providedAnswers, String token) {
         SaveAnswerResponse response = new SaveAnswerResponse();
-        Optional<QuizCode> quizCode = quizCodeRepository.findById(providedAnswers.getQuizCode());
+        Optional<QuizEncode> quizEncode = quizEncodeRepository.findById(providedAnswers.getQuizCode());
+        if (quizEncode.isEmpty()) {
+            response.getErrors().add(new Error("not_found", "Quiz not found"));
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.setSuccess(false);
+            return response;
+        }
+        String quizCode = quizEncode.get().getQuizCode().getCode();
+
+        //Optional<QuizCode> quizCode = quizCodeRepository.findById(providedAnswers.getQuizCode());
         Optional<Group> group = groupRepository.getGroupByName(providedAnswers.getGroupName());
 
         // Check if group and quiz code is available
@@ -49,12 +56,12 @@ public class AnswerServiceImpl implements AnswerService {
             return response;
         }
 
-        if (quizCode.isEmpty()) {
-            response.getErrors().add(new Error("not_found", "Quiz not found"));
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            response.setSuccess(false);
-            return response;
-        }
+//        if (quizCode.isEmpty()) {
+//            response.getErrors().add(new Error("not_found", "Quiz not found"));
+//            response.setStatus(HttpStatus.NOT_FOUND.value());
+//            response.setSuccess(false);
+//            return response;
+//        }
 
         // Handle token not exist
         if (token == null) {
@@ -93,7 +100,7 @@ public class AnswerServiceImpl implements AnswerService {
         // Save answers to database
         for (int i = 0; i < providedAnswers.getAnswers().size(); i++) {
             Answer answer = new Answer();
-            answer.setQuizCode(quizCode.get());
+            answer.setQuizCode(quizEncode.get().getQuizCode());
             answer.setGroup(group.get());
             answer.setAnswerChoice(providedAnswers.getAnswers().get(i).getAnswer());
             answer.setQuestionNumber(providedAnswers.getAnswers().get(i).getQuestionNumber());
@@ -102,7 +109,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         // Increase attempt of the submit group, update latest quiz to current quiz and update submitted
         groupRepository.addAttempt(providedAnswers.getGroupName());
-        groupRepository.updateLatestQuiz(providedAnswers.getQuizCode(), providedAnswers.getGroupName());
+        groupRepository.updateLatestQuiz(quizCode, providedAnswers.getGroupName());
         loginRepository.updateSubmitted(providedAnswers.getGroupName(), providedAnswers.getQuizCode(), true);
 
         response.setStatus(HttpStatus.OK.value());

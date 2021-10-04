@@ -28,7 +28,7 @@ public class Group {
     private Long score;
 
     @OneToOne(targetEntity = QuizCode.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "latest_quiz", referencedColumnName = "code")
+    @JoinColumn(name = "latest_quiz", referencedColumnName = "code", nullable = true)
     private QuizCode quizCode;
 
     @Override
