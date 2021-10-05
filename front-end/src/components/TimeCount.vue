@@ -22,7 +22,14 @@ export default {
         const QUIZ_DURATION = ref(4800); //in seconds
     
         const timeDisplay = computed(() => 
-            `${parseInt(QUIZ_DURATION.value/60)}:${QUIZ_DURATION.value%60}s`
+            {
+                const minutes = String(parseInt(QUIZ_DURATION.value/60));
+                const seconds = String(QUIZ_DURATION.value % 60);
+                const paddedMinutes = ("0" + minutes).slice(-2);
+                const paddedSeconds = ("0" + seconds).slice(-2);
+                return `${paddedMinutes}:${paddedSeconds}`;
+            }
+            // `${parseInt(QUIZ_DURATION.value/60)}:${QUIZ_DURATION.value%60}s`
         )
         
         

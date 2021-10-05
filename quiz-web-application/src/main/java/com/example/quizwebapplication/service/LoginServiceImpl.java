@@ -23,12 +23,12 @@ public class LoginServiceImpl implements LoginService {
         LoginResponse response = new LoginResponse();
 
         if (savedLogin.isEmpty()) {
-            response.getErrors().add(new Error("invalid", "Group name not exist or Quiz code invalid"));
+            response.getErrors().add(new Error("invalid", "Group name not exists or Quiz code is invalid"));
             response.setSuccess(false);
             return response;
         }
         if (savedLogin.get().isExpired()) {
-            response.getErrors().add(new Error("expired", "Login credential expired"));
+            response.getErrors().add(new Error("expired", "You have done the quiz. Excessive attempts!"));
             response.setSuccess(false);
             return response;
         }
