@@ -94,7 +94,7 @@ export default {
                 animationData: LoadingAnimation,
             })
     })
-        const isSubmitted = ref(true);
+        const isSubmitted = ref(false);
         const currentQuestionIndex = ref(0);
         const submitPayLoad = reactive({
             quizCode: props.quizCode,
@@ -131,12 +131,12 @@ export default {
 
         const loadQuiz = async () => {
             try {
-                // let response = await QuizAPI.getQuiz(props.quizCode);
-                // questions.value = response.data.quiz.questions;
+                let response = await QuizAPI.getQuiz(props.quizCode);
+                questions.value = response.data.quiz.questions;
                 
                 //Test with local server
-               let response = await QuizAPI.getLocalQuiz();
-               questions.value = response.questions;
+            //    let response = await QuizAPI.getLocalQuiz();
+            //    questions.value = response.questions;
                 
                 
             //     questionNumberList.value = questions.value.map((element,index) => (

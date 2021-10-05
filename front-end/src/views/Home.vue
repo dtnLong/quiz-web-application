@@ -17,7 +17,7 @@
       </form>
       <button class="flex items-center gap-4 py-3 text-2xl font-bold rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isLoading}" @click.prevent="authenticate"> <div v-if="isLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div> Start the quiz!
       <svg width="32px" height="32px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
-      <p class="px-2 mt-3 text-xs text-center text-gray-700 ">Forgot your quiz code? Please contact <a href="#" class="italic underline">thelogisticom@gmail.com</a> to retrieve another one</p>
+      <p class="px-2 mt-3 text-xs text-center text-gray-700 ">Forgot your quiz code? Please contact <a href="#" class="italic underline">thelogisticom.rmitbc@gmail.com</a> to retrieve another one</p>
     </div>
   </section>
   
@@ -49,7 +49,7 @@ export default {
     })
 
 
-    const isLogin = ref(true);
+    const isLogin = ref(false);
     const isLoading = ref(false);
     const groupName = ref(null);
     const quizCode = ref(null);
@@ -70,7 +70,10 @@ export default {
           isLogin.value = true;
         }
         isLoading.value = false;
-      }).catch(err => {error.value = err.response.data.errors[0].message; isLoading.value = false});
+      }).catch(err => {
+        error.value = err.response.data.errors[0].message; 
+       
+        isLoading.value = false});
     }
     }
 
