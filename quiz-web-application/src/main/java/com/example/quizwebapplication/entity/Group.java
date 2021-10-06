@@ -21,6 +21,9 @@ public class Group {
     @Column
     private String name;
 
+    @Column(name = "leader_email")
+    private String leaderEmail;
+
     @Column
     private Short attempt;
 
