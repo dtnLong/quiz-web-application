@@ -20,6 +20,11 @@ import { onMounted } from '@vue/runtime-core';
             onMounted (() => {
                 
             })
+             window.onbeforeunload = function(event) {
+             event.preventDefault(); // required in some browsers
+    event.returnValue = "";
+    return "Are you sure you want to exit";
+        }
         }
     }
 

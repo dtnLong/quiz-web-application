@@ -1,5 +1,5 @@
 <template>
-  <p @click="sendClick" class="flex items-center justify-center font-bold text-gray-700 border-2 border-gray-700 rounded-full cursor-pointer w-9 h-9" :class="{active: isActive, done: isDone && !isActive}" :id="number">
+  <p @click="sendClick" class="flex items-center justify-center w-10 h-10 font-bold text-gray-700 border-2 border-gray-700 rounded-full cursor-pointer lg:w-9 lg:h-9" :class="{active: isActive, done: isDone && !isActive}" :id="number">
       {{number}}
   </p>
 </template>
@@ -24,15 +24,6 @@ import {ref } from 'vue'
 
 </script>
 <style scoped>
-  .default{
-    @apply w-9 h-9 flex items-center justify-center font-bold rounded-full border-2 border-gray-700 text-gray-700 cursor-pointer;
-  }
-
-  .active{
-    @apply w-9 h-9 flex items-center justify-center font-bold rounded-full border-none bg-error-900 text-white  cursor-pointer;
-  }
-  .done{
-    @apply w-9 h-9 flex items-center justify-center font-bold rounded-full border-2 border-gray-700 text-gray-700 opacity-50 line-through cursor-pointer;
-  }
+  
 </style>
 

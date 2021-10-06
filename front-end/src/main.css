@@ -22,4 +22,44 @@
   p {
     @apply leading-8;
   }
+  input::placeholder {
+    font-size: 16px;
+  }
+  .loading {
+    @apply opacity-50;
+  }
+
+  .loader {
+    border-top-color: #fda95b;
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  /* .default {
+    @apply flex items-center justify-center font-bold text-gray-700 border-2 border-gray-700 rounded-full cursor-pointer w-9 h-9;
+  } */
+
+  .active {
+    @apply text-white bg-error-900;
+  }
+  .done {
+    @apply line-through opacity-50;
+  }
 }
