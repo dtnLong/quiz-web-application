@@ -7,6 +7,7 @@ import com.example.quizwebapplication.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class AnswerServiceImpl implements AnswerService {
     private final AuthenticationService authenticationService;
     private final QuizRepository quizRepository;
     private final QuizEncodeRepository quizEncodeRepository;
+    private final MailService mailService;
 
     private Map<Long, Quiz> mapQuizList(List<Quiz> quizCorrectAnswerList) {
         Map<Long, Quiz> quizCorrectAnswerMap = new HashMap<>();
@@ -30,6 +32,40 @@ public class AnswerServiceImpl implements AnswerService {
             quizCorrectAnswerMap.put(correctAnswer.getQuestionNumber(), correctAnswer);
         }
         return quizCorrectAnswerMap;
+    }
+
+    private String composeMail(SaveAnswerRequest providedAnswers) {
+        StringBuilder content = new StringBuilder();
+        content.append("Group name: ")
+                .append(providedAnswers.getGroupName())
+                .append("\n")
+                .append("Quiz code: ")
+                .append(providedAnswers.getQuizCode())
+                .append("\n");
+        for (int i = 0; i < providedAnswers.getAnswers().size(); i++) {
+            content.append(providedAnswers.getAnswers().get(i).getQuestionNumber())
+                    .append(". ")
+                    .append(providedAnswers.getAnswers().get(i).getAnswer())
+                    .append("\n");
+        }
+        return content.toString();
+    }
+
+    @Transactional
+    @Override
+    public String sendAnswerMail(SaveAnswerRequest providedAnswers) {
+        String errorMessage = "";
+        // Send email
+        String recipientAddress = groupRepository.getGroupByName(providedAnswers.getGroupName()).get().getLeaderEmail();
+        String senderAddress = "thelogisticomseason6@gmail.com";
+        String subject = "Answer submitted";
+        String content = composeMail(providedAnswers);
+        try {
+            mailService.sendEmail(senderAddress, recipientAddress, subject, content);
+        } catch (MailSendException exception) {
+            errorMessage = exception.getMessage();
+        }
+        return errorMessage;
     }
 
     @Transactional

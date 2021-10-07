@@ -1,11 +1,8 @@
 package com.example.quizwebapplication.controller;
 
 import com.example.quizwebapplication.dto.AddGroupResponse;
-import com.example.quizwebapplication.dto.SaveAnswerRequest;
-import com.example.quizwebapplication.dto.SaveAnswerResponse;
 import com.example.quizwebapplication.service.GroupService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

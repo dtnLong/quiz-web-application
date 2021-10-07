@@ -1,5 +1,6 @@
 package com.example.quizwebapplication.controller;
 
+import com.example.quizwebapplication.dto.Error;
 import com.example.quizwebapplication.dto.GetQuizResponse;
 import com.example.quizwebapplication.dto.SaveAnswerRequest;
 import com.example.quizwebapplication.dto.SaveAnswerResponse;
@@ -36,6 +37,15 @@ public class QuizController {
         // When success, delete jwt
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Set-Cookie", "token=null; Path=/api; Max-Age=0; HttpOnly");
+
+        String emailErrorResponse = answerService.sendAnswerMail(answers);
+        if (!emailErrorResponse.isEmpty()) {
+            response.setSuccess(false);
+            response.setStatus(500);
+            response.getErrors().add(new Error("mail", emailErrorResponse));
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+
         return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 
