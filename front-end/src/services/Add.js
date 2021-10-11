@@ -647,27 +647,27 @@ const data = {
         },
         {
             questionNumber: 24,
-			questionText: "In purchasing an item or service from a supplier, which factor is not included when specifications are being developed?",
+			questionText: "You are the Transportation Manager for a manufacturing and distribution firm. Client demand for your product has recently increased, and your company is struggling to meet customer orders on time. Furthermore, your company's truck fleet is at capacity, necessitating the hiring of additional Logistics and Transport businesses to meet the increased shipping demands. You are in charge of scheduling material shipments between locations at the lowest possible cost while keeping an eye on material availability at each warehouse site. As a result, your task is to utilize the data given to input into Table 1 to determine the optimal feasible solution to decrease freight costs while meeting consumer demand.\nHints: applying The Northwest Corner Method for the initial feasible solution and The Modified Distribution method for the optimal test.\nhttps://drive.google.com/uc?export=view&id=1oo0-1r0tVnd3DYHJinwOwFPjUR-oddFL\nThe following table is data presented for you to input into Table 1 and calculate possible solutions to the problem\nhttps://drive.google.com/uc?export=view&id=1HZ9surl9f4297iBh9H_oHNr_2ks8o-58\nThe optimal cost is:",
 			choices: [
 				{
 					option: "A",
 					correct: true,
-					choiceText: "Delivery requirement"
+					choiceText: "$3,700"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Quantity requirements"
+					choiceText: "$2,450"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "Price requirements"
+                    choiceText: "$2,250"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "Functional requirement"
+                    choiceText: "$2,600"
                 }
 				
 

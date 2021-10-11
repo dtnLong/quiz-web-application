@@ -49,7 +49,7 @@ export default {
     })
 
 
-    const isLogin = ref(false);
+    const isLogin = ref(true);
     const isLoading = ref(false);
     const groupName = ref(null);
     const quizCode = ref(null);

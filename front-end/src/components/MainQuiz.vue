@@ -35,8 +35,10 @@
                 </g>
             </svg>
                  <!-- Question --->
-                <h1 class="mb-12 text-xl font-semibold leading-8 whitespace-pre-line select-none"> Question {{currentQuestionIndex +1}}: {{questions[currentQuestionIndex].questionText}}</h1>
-                
+                <!-- <h1 class="mb-12 text-xl font-semibold leading-8 whitespace-pre-line select-none"> Question {{currentQuestionIndex +1}}: {{questions[currentQuestionIndex].questionText}}</h1> -->
+                <question-quiz :questionNumber="currentQuestionIndex +1" :questionText="questions[currentQuestionIndex].questionText">
+
+                </question-quiz>
 
                 <!-- Option List --->
                 <div class='flex flex-col gap-5 '>
@@ -73,12 +75,13 @@ import TimeCount from "./TimeCount.vue"
 import QuestNumber from "./QuestNumber.vue"
 import Option from "./Option.vue"
 import Submit from "./Submit.vue"
+import QuestionQuiz from "./QuestionQuiz.vue"
 import QuizAPI from "../services/QuizAPI"
 import lottie from "lottie-web";
 import LoadingAnimation from '../assets/loading-animation.json'
 
 export default {
-    components: {TimeCount, QuestNumber, Option, Submit},
+    components: {TimeCount, QuestNumber, Option, Submit, QuestionQuiz},
     props: {
         quizCode: String,
         groupName: String,
@@ -131,12 +134,12 @@ export default {
 
         const loadQuiz = async () => {
             try {
-                let response = await QuizAPI.getQuiz(props.quizCode);
-                questions.value = response.data.quiz.questions;
+                // let response = await QuizAPI.getQuiz(props.quizCode);
+                // questions.value = response.data.quiz.questions;
                 
                 //Test with local server
-            //    let response = await QuizAPI.getLocalQuiz();
-            //    questions.value = response.questions;
+               let response = await QuizAPI.getLocalQuiz();
+               questions.value = response.questions;
                 
                 
             //     questionNumberList.value = questions.value.map((element,index) => (
