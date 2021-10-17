@@ -8,7 +8,6 @@
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
-    "faunadb": "^4.3.0",
     "gsap": "^3.7.0",
     "lottie-vuejs": "^0.4.0",
     "lottie-web": "^5.7.11",

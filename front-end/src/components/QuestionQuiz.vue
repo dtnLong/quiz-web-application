@@ -1,12 +1,12 @@
 <template>
-    <h1 class="mb-12 text-xl font-semibold leading-8 whitespace-pre-line select-none"> Question {{questionNumber}}: 
-        <span v-for="(text, index) in questionFormat"  :key="index" v-html="text"></span>
-    </h1>
+    <div class="text-xl font-semibold leading-8 select-none">Question {{questionNumber}}: 
+        <p v-for="(text, index) in questionFormat"  class="mt-1" :key="index" v-html="text"></p>
+    </div>
     
 </template>
 
 <script>
-import {ref, onMounted, computed} from 'vue'
+import {ref, computed} from 'vue'
 export default {
     props: {questionNumber: Number, questionText: String},
     setup(props){
@@ -20,8 +20,9 @@ export default {
             if (LINK_DETECTION_REGEX.test(chunk)) {
                 // arrayOfLinks.value.push(chunk);
                 
-                return`<img class='w-1/2 mx-auto' src='${chunk}'/>`;
-            }else{
+                return`<img class='w-full mx-auto xl:w-10/12' src='${chunk}'/>`;
+            }
+            else{
                 return chunk;
             }
             })

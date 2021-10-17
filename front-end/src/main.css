@@ -14,6 +14,9 @@
   }
 }
 @layer utilities {
+  .main-bg {
+    background: linear-gradient(270deg, #ff9a9e 0%, #fad0c4 100%);
+  }
   .selected {
     @apply bg-error-500;
     @apply border-error-500;

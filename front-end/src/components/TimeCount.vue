@@ -40,7 +40,7 @@ export default {
                 renderer: "svg",
                 loop: true,
                 autoplay: true,
-                //path: "https://assets7.lottiefiles.com/packages/lf20_xz75lvff.json",
+                
                 animationData: AnimationData,
             })
         

@@ -1,6 +1,6 @@
 <template>
     <!-- <span class="absolute cursor-pointer top-10 left-24" @click="backToQuiz" >Back to Quiz</span> -->
-    <section v-if="!isLogOut" class="relative h-auto py-36">
+    <section class="relative h-auto select-none py-36">
         <img src="../assets/logis-base-logo.png" class="absolute w-20 transform -translate-x-1/2 md:w-40 left-1/2 top-11" alt="the-logisticom-logo">
         
              <h1 class='relative text-4xl font-bold text-center text-error-900'>Submitted <span class="absolute inline-block w-32 -top-1/2 left-1/2 " id="confetti-animation"></span>  </h1>
@@ -14,7 +14,8 @@
 
                 <div class="flex flex-col gap-4">
                     <div class='text-xl' v-for="({questionNumber, questionText, choiceText, answer}) in submitPayLoad.answers" :key="questionNumber">
-                    <p><span class="font-bold">{{questionNumber}}.</span>  {{questionText}}</p>
+                    <!-- <p><span class="font-bold">{{questionNumber}}.</span>  {{questionText}}</p> -->
+                    <question-quiz :questionNumber="questionNumber" :questionText="questionText"></question-quiz>
                     <p class='font-bold'>
                         {{answer}}. {{choiceText}}
                     </p>
@@ -31,7 +32,7 @@
                 <button class="flex items-center gap-2 py-3 text-xl font-bold text-white rounded-full px-7 bg-gradient-to-r from-red-600 to-pink-600 " @click="isLogOut = true">Log Out<svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>  
             </div> -->
     
-        
+        <p class="px-10 mt-2 italic font-medium text-center md:px-0">A copy of this preview will be sent to your team leader's mailbox.</p>
         
        
     </section>
@@ -40,10 +41,10 @@
 </template>
 
 <script>
-import {useRoute, useRouter} from 'vue-router'
+
 import lottie from "lottie-web";
 import Confetti from '../assets/confetti.json'
-import Home from '../views/Home.vue'
+import QuestionQuiz from './QuestionQuiz.vue'
 import QuizAPI from '../services/QuizAPI';
 import {onMounted, ref} from 'vue';
 export default {
@@ -52,13 +53,10 @@ export default {
         submitPayLoad: Object, 
         formattedPayLoad: Object},
 
-    
+    components: {QuestionQuiz},
     emits: ["backToQuiz"],
     setup( props, {emit}) {
-        const route = useRoute();
-        const router = useRouter();
-        // console.log(props.submitPayLoad)
-        const isLogOut = ref(false);
+        
         
         // const formattedAnwser = () => {
         //     return props.submitPayLoad.answers.map((item) => ({
@@ -96,7 +94,7 @@ export default {
         //     return "Are you sure you want to exit?"
         // }
         
-        return{isLogOut}
+        return{}
     },
 }
 </script>

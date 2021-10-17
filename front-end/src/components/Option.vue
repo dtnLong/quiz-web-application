@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import {onMounted, ref,computed,onUpdated} from 'vue'
-// import {  onMounted, onUpdated } from '@vue/runtime-core'
+import {computed} from 'vue'
+
 export default {
     props: {
         optionText: String,
@@ -37,35 +37,6 @@ export default {
         // let hasCheckedAlias= ref(props.hasChecked); 
         let isSelected = computed(()=> props.hasChecked);
         
-         
-
-    
-        // watch(hasCheckedAlias.value, (newVal, oldVal) =>{
-        //     isSelected.value = newVal;
-            
-        // });
-
-        
-        // onUpdated(() => {
-        //     console.log(hasCheckedAlias.value);
-        // })
-
-
-        // onUpdated(()=> {
-        //     if (props.hasChecked === props.option){
-        //         document.getElementById(`${props.option}`).checked = true;
-        //     }else {
-        //         document.getElementById(`${props.option}`).checked = false;
-        //     }
-        // })
-
-        // onMounted(()=> {
-        //     if (props.hasChecked === props.option){
-        //         document.getElementById(`${props.option}`).checked = true;
-        //     }else {
-        //         document.getElementById(`${props.option}`).checked = false;
-        //     }
-        // })
         
         const optionSelected = () =>{
             let selection = {option: props.option, optionText: props.optionText};
@@ -77,22 +48,3 @@ export default {
     },
 }
 </script>
-
-
-<style scoped>
-    /* input:checked ~ .checked-mark{
-        @apply bg-pink-600; 
-    }
-    
-
-    .checked-mark::after{
-        content: "";
-        @apply absolute w-1 h-1 rounded-full bg-gray-50 hidden top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
-    }input:checked ~ .checked-mark::after{
-        @apply block; 
-    } */
-
-
-
-
-</style>
