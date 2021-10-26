@@ -9,7 +9,10 @@
            <img src="../assets/logis-base-logo.png" class="inline-block w-12 md:w-24 " alt="the-logisticom-logo">
             <!-- Time Countdown Animation ---->
             <TimeCount @toSubmit="submit"/>
-            <button @click.prevent="submit" class="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white transition-all duration-200 ease-linear rounded-full hover:bg-none hover:bg-error-900 md:py-3 md:text-base md:px-7 bg-gradient-to-r from-red-600 to-pink-600">Submit <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+            <button @click.prevent="submit" class="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white transition-all duration-200 ease-linear rounded-full hover:bg-none hover:bg-error-900 md:py-3 md:text-base md:px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isSubmitLoading}">
+                <div v-if="isSubmitLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div>
+                    Submit <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
         </nav>
        
         
@@ -103,21 +106,9 @@ export default {
                 submitPayLoad.answers.splice(index, 0, {questionText: item.questionText, questionNumber: item.questionNumber, choiceText: 'N/A', answer: 'N/A'});
                 
 
-                // if (index ===0){
-                //     questionNumberList.value.push({number: (index+1), state:'active'});
-
-                // }else{
-                //     questionNumberList.value.push({number: (index+1), state:'default'});
-                // }
-
-
-
                 
             });
 
-            
-
-            console.log(submitPayLoad);
         }
 
         const loadQuiz = async () => {
@@ -129,10 +120,6 @@ export default {
             //    let response = await QuizAPI.getLocalQuiz();
             //    questions.value = response.questions;
                 
-                
-            //     questionNumberList.value = questions.value.map((element,index) => (
-            // index=== 0? {number: (index+1).toString(), state:'active'} :{number: (index+1).toString(), state:'default'}
-            // ))
 
                  //Initialize the submit payload once questions.value are fetched.
                 initSubmitPayload();
@@ -163,18 +150,12 @@ export default {
 
         
         
-        //const currentQuestionNumber = computed(() => currentQuestionIndex.value + 1);
-        // const buttonText = computed(() => questions.value[currentQuestionIndex.value].questionNumber === questions.value.length? "Go to Submit" : "Next question" );
-    
-        //Change style of the question
-        // const updateQuestionState = (updateState) => {
-        //     questionNumberList.value[currentQuestionIndex.value].state = updateState;
-        // }
+        
         
         //handle any option selecting event change.
         const answer = ref('N/A');
         const handleSelected = (selection) => {
-            // console.log(selection);
+            
             answer.value = selection;
             submitPayLoad.answers[currentQuestionIndex.value].answer = answer.value.option;
             submitPayLoad.answers[currentQuestionIndex.value].choiceText =answer.value.optionText;
@@ -182,42 +163,18 @@ export default {
         }
              
         const handleQuestionClick = (el) => {
-            // selectAns();
+            
             currentQuestionIndex.value = parseInt(el.innerText) - 1;
-            //updateQuestionState('active');
+            
         };
 
-        
-        //Save selected option to payload
-        // const selectAns = () => {
-        //     if (answer.value !== 'N/A'){
-        //             console.log(answer.value);
-        //             // let choiceText = document.querySelector(`label[for="${answer.value}"]`).innerText;
-        //             submitPayLoad.answers[currentQuestionIndex.value].answer = answer.value.option;
-        //             submitPayLoad.answers[currentQuestionIndex.value].choiceText =answer.value.optionText;
-        //             console.log(submitPayLoad.answers[currentQuestionIndex.value]);
-        //             answer.value = 'N/A';
-        //             updateQuestionState('done');
-
-        //         }else{
-        //             updateQuestionState('default');
-        //     }
-                
-            
-            
-        // }
-
-
         const toNextQuestion = () => {
-            //selectAns();
-
-            
 
             if (currentQuestionIndex.value < (questions.value.length - 1) ){
  
                 currentQuestionIndex.value+=1; 
                 
-                // updateQuestionState('active');
+                
             }
             
             
@@ -225,47 +182,16 @@ export default {
         }
 
         const toPreviousQuestion = () => {
-            // selectAns();
+            
             if (currentQuestionIndex.value > 0 ){
                 
                 currentQuestionIndex.value-=1; 
                 
-                // updateQuestionState('active');
+                
             }
             
         }
 
-        //Check if the option is already selected
-        // const hasAlreadyChecked = computed(() => {
-           
-        //     // let answer  = submitPayLoad.answers.find(answer => answer.questionNumber === questions.value[currentQuestionIndex.value].questionNumber);
-           
-        //     // if (answer && answer.answer){
-        //     //     return answer.answer;
-                
-        //     // }else{
-        //     //     return "init";
-        //     // }
-
-        //     // if( ){
-        //     //     return submitPayLoad.
-        //     // }
-            
-
-            
-            
-           
-            
-        // })
-        
-        
-        // const toggleIsSubmitted = (state) => {
-        //     // if (state) {
-        //     //     selectAns();
-                
-        //     // };
-        //     isSubmitted.value = true;
-        // }
 
         const formattedAnwser = () => {
             return submitPayLoad.answers.map((item) => ({
@@ -277,19 +203,26 @@ export default {
 
         
         
-
+        const isSubmitLoading = ref(false);
         const submit = () => {
+            isSubmitLoading.value = true;
             const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
             QuizAPI.submitQuiz(formattedPayLoad)
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 isSubmitted.value = true;
-
+                
                 })
             .catch(error => console.log(error.response))
+            isSubmitLoading.value = false;
 
             //Test locally
-            // isSubmitted.value = true;
+            // isSubmitLoading.value = true;
+            // setTimeout(() => {
+            //     isSubmitLoading.value = false;
+            // }, 3000)
+            //isSubmitted.value = true;
+            
         }
 
     
@@ -299,7 +232,7 @@ export default {
 
        
         
-        return{handleQuestionClick, questions, currentQuestionIndex/*, selectAns*/, toNextQuestion, toPreviousQuestion,  /*questionNumberList,checkValue, buttonText*/isSubmitted, submitPayLoad/*, toggleIsSubmitted*/, handleSelected, fetchMsg, submit}
+        return{handleQuestionClick, questions, currentQuestionIndex/*, selectAns*/, toNextQuestion, toPreviousQuestion,  /*questionNumberList,checkValue, buttonText*/isSubmitted, submitPayLoad/*, toggleIsSubmitted*/, handleSelected, fetchMsg, submit, isSubmitLoading}
     },
 }
 </script>

@@ -36,7 +36,11 @@ public class AnswerServiceImpl implements AnswerService {
 
     private String composeMail(SaveAnswerRequest providedAnswers) {
         StringBuilder content = new StringBuilder();
-        content.append("Group name: ")
+        content.append("\n")
+                .append("Congratulations, your team successfully completed Round 1B. Here below are the recorded answers to multiple choice questions so your team can compare when receiving the official marks or results for both Round 1A & 1B:")
+                .append("\n")
+                .append("\n")
+                .append("Group name: ")
                 .append(providedAnswers.getGroupName())
                 .append("\n")
                 .append("Quiz code: ")
@@ -48,6 +52,14 @@ public class AnswerServiceImpl implements AnswerService {
                     .append(providedAnswers.getAnswers().get(i).getAnswer())
                     .append("\n");
         }
+        content.append("\n")
+                .append("Please make sure to regularly check the mailbox (including the junk mailbox) to ensure all the emails will be well-sent to your team. The total marks for Round 1 will be released on 21st November 2021. Lastly, please reply to this email if you received the information well.")
+                .append("\n")
+                .append("\n")
+                .append("We wish you great luck and joy on your The Logisticom Season 6 journey!")
+                .append("\n")
+                .append("Regards,");
+
         return content.toString();
     }
 
@@ -57,8 +69,8 @@ public class AnswerServiceImpl implements AnswerService {
         String errorMessage = "";
         // Send email
         String recipientAddress = groupRepository.getGroupByName(providedAnswers.getGroupName()).get().getLeaderEmail();
-        String senderAddress = "thelogisticomseason6@gmail.com";
-        String subject = "Answer submitted";
+        String senderAddress = "thelogisticom.rmitbc@gmail.com";
+        String subject = "[The Logisticom Season 6 2021] ROUND 1B SUBMISSION CONFIRMATION";
         String content = composeMail(providedAnswers);
         try {
             mailService.sendEmail(senderAddress, recipientAddress, subject, content);

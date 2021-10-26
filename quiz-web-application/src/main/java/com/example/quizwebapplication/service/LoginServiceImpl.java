@@ -33,7 +33,7 @@ public class LoginServiceImpl implements LoginService {
         LocalDateTime openDateTime = quizDateRepository.findById("quizStart").get().getDatetime();
         LocalDateTime closeDateTime = quizDateRepository.findById("quizEnd").get().getDatetime();
         if (currentTime.isBefore(openDateTime) || currentTime.isAfter(closeDateTime)) {
-            response.getErrors().add(new Error("closed", "Quiz is closed"));
+            response.getErrors().add(new Error("closed", "Quiz is not accessible at current time"));
             response.setSuccess(false);
             return response;
         }

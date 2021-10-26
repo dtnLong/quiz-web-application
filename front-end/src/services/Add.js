@@ -1,416 +1,26 @@
 import API from "./API";
 
 const data = {
-    code: "quiz01", 
+    code: "quiz04", 
 	questions:[
 		{
 			questionNumber: 1,
-			questionText: "The reason for holding safety stock is?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "To improve stock holding levels."
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "To improve stock accuracy levels."
-				},
-                {
-                    option: "C",
-                    correct: true,
-                    choiceText: "To cater for demand forecast errors."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "To cater for a large storage capacity."
-                }
-				
-
-			]
-		},
-        {
-            questionNumber: 2,
-			questionText: "Which of the following statements is true?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "A 3PL company is a professional logistics service provider meeting the logistics requirements of an organization and can also integrate its resources and capability in order to provide comprehensive solutions to its customers."
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "A 4PL company is a professional LSP meeting the logistics requirements of an organization and can also integrate its resources and technology in order to provide comprehensive solutions to its customers."
-				},
-                {
-                    option: "C",
-                    correct: true,
-                    choiceText: "A 3PL is a logistics service provider meeting only the logistics requirements of an organization while 4PL is a logistics service provider meeting the logistics requirements of an organization and can also integrate its resources, capability and technology to provide comprehensive solutions to its customers."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "All of the above."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 3,
-			questionText: "When a retailer aims to achieve leadership in cost, what is likely to happen?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Customers will like to have convenience and the retailers will also set up a number of stores at different locations in order to provide convenience to the customers."
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "Customers will prefer a large variety of products and the retailer will also keep a large variety in the store in order to satisfy customer needs."
-				},
-                {
-                    option: "C",
-                    correct: true,
-                    choiceText: "Customers will prefer a large variety of products but the retailer will not keep a large variety in the store in order to achieve economies of scale."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Customers will prefer a short lead time for their products and the retailer will keep a higher amount of inventory in order to satisfy customer needs in time."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 4,
-			questionText: "Cycle counting:",
-			choices: [
-				{
-					option: "A",
-					correct: true,
-					choiceText: "Can reduce lost production"
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "Can be done by all personnel, including clerical staff"
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Is more concerned with correcting errors in inventory counts"
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Is slow to detect problems"
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 5,
-			questionText: "Company B is choosing between 2 alternative Order Plans for its inventory of a certain product. The annual demand for the product is expected  to be 15,000 units.\nPlan 1:\nOrder cost would be $0.55 per order\nInventory holding cost would be $1,37 per unit\nPlan 2:\nOrder cost would be $0.41 per order\nInventory holding cost would be 20% and unit cost is $6,57\nFind out EOQ and total inventory cost and decide which plan would lead to the lower total inventory cost?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "EOQ1 = 110; EOQ2 = 82; Plan 1"
-				},
-				{
-					option: "B",
-					correct: true,
-					choiceText: "EOQ1 = 110; EOQ2 = 82; Plan 2"
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "EOQ1 = 82; EOQ2 = 110; Plan 1"
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "EOQ1 = 82; EOQ2 = 110; Plan 2"
-                }
-			]
-        },
-        {
-            questionNumber: 6,
-			questionText: "Company A wants to calculate CLV (Customer Lifetime Value) with following information:\n-Total sales revenue(annual): $1,000,000\n-Total number of orders (annual): 40,000\n-Total number of unique(annual):15,000\n-Cost of goods sold: $470,000 (Beginning inventory: $180,000 ; Ending inventory: $160,000 ; Additional Purchases: $450,000)\n-Customer churn rate: 60%\nWhat is the \"CLV\" of Company A? \nGiven: CLV= AOV x F x GM x (1/R)",
-			choices: [
-				{
-					option: "A",
-					correct: true,
-					choiceText: "$45.7"
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "$61,3"
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "$16,42"
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "$73,57"
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 7,
-			questionText: "Your company has a very slow reaction to changes in customer demand. In addition, they have excessive levels of inventory, a high customer complaint rate and poor delivery performance. Executive Management has been advised to move from a Push to a Pull environment. What characteristics of a Pull environment should improve the situation?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Supply chain is aligned to supplier product availability."
-				},
-				{
-					option: "B",
-					correct: true,
-					choiceText: "Factory production is tightly synchronized to customer orders."
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Demand management and supply chain management are managed independently."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Replenishment is determined by safety stock, safety lead time, lot sizing queues and setups."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 8,
-			questionText: "Building a customer-centric supply chain strategy is ____",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Developing a supply chain “from the inside out”, focusing on the supply chain process to deliver the best service to customers."
-				},
-				{
-					option: "B",
-					correct: true,
-					choiceText: "Developing a supply chain “from the outside in”, starting from the end-customer perspective."
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Developing a supply chain with a great customer-service focus to satisfy customer’s expectation."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Developing an effective marketing supply chain to understand customer’s insights."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 9,
 			questionText: "The performance measurement approach that would be most useful in measuring and describing supply chain processes would be:",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "Strategic profit model."
+					choiceText: "Strategic Profit Model"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Balanced scorecard."
+					choiceText: "Balanced scorecard"
 				},
                 {
                     option: "C",
                     correct: true,
-                    choiceText: "SCOR model."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "All of these."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 10,
-			questionText: "Which of the following strategies is used primarily for demand planning?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Build-to-order scheduling."
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "Push-pull replenishment."
-				},
-                {
-                    option: "C",
-                    correct: true,
-                    choiceText: "Collaborative planning, forecasting, and replenishment."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Vendor-managed inventory."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 11,
-			questionText: "A firm wants to lose customers that don't value the unique products and services the firm offers and to attract and retain customers that want what the firm offers. Engaging in this activity should allow the firm to:",
-			choices: [
-				{
-					option: "A",
-					correct: true,
-					choiceText: "Create a more loyal customer base."
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "Improve customer satisfaction rates."
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Increase market share."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Target higher-profit customers."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 12,
-			questionText: "Company A is the e-commerce firm B2B that provides a platform for SMEs to list, sell, and distribute their products. Company A's clients can now follow transactions from listing through delivery thanks to a new agreement with UPS. It generates______. for its consumers by enabling them to choose how, when and where their order is to be received.",
-			choices: [
-				{
-					option: "A",
-					correct: true,
-					choiceText: "A tailored experience."
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "A good customer service."
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "A customer-centric service."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "An agile supply chain."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 13,
-			questionText: "You are an upper-level manager in a firm. You believe that corporate objectives are not effectively disseminated throughout the organization and that line-level managers do not take them into account in their decision making. Which of the following would best help you to try to correct this problem?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Strategic profit model."
-				},
-				{
-					option: "B",
-					correct: true,
-					choiceText: "Balanced scorecard model."
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Maslow's needs model."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "SCOR model."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 14,
-			questionText: "Xanadu Inc. claims that its manufacturing processes result in fewer greenhouse gases than those of its primary competitors. This suggests that Xanadu has a focus on:",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Risk management."
-				},
-				{
-					option: "B",
-					correct: true,
-					choiceText: "Sustainability."
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Flexibility."
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Profitability."
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 15,
-			questionText: "Which of the following is considered a \"process-related\" competitive priority?",
-			choices: [
-				{
-					option: "A",
-					correct: true,
-					choiceText: "Flexibility"
-				},
-				{
-					option: "B",
-					correct: false,
-					choiceText: "Quality"
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Cost"
+                    choiceText: "SCOR model"
                 },
                 {
                     option: "D",
@@ -420,160 +30,326 @@ const data = {
 				
 
 			]
-        },
+		},
         {
-            questionNumber: 16,
-			questionText: "A local distributor expects to sell approximately 8900 tables of a certain size. Annual carrying cost is $12 per unit, and ordering cost is $85 per order. The distributor operates 300 days a year. What is the length of an order cycle if the EOQ is ordered?",
+            questionNumber: 2,
+			questionText: "VinFast claims that its producing processes conduct fewer greenhouse gases than those of its rivals. This suggests that VinFast has a focus on:",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "9 working days"
+					choiceText: "Risk Management"
 				},
 				{
 					option: "B",
-					correct: false,
-					choiceText: "7 working days"
+					correct: true,
+					choiceText: "Sustainability"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "11 working days"
+                    choiceText: "Flexibility"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Profitability"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 3,
+			questionText: "A Chinese firm that has a diversity of supplier relationships which helps it provide many kinds of products and services to many types of consumers. The business is still going well until the internal conflict of supplier A and B occurs and they could not work together. This forces the Chinese firm to considerably and carefully choose who they will continue working with due to the exit of one of them will make the firm lose their production and consumer as well. Which measurement could help this firm to make the right decision?",
+			choices: [
+				{
+					option: "A",
+					correct: true,
+					choiceText: "Cost to serve"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Transaction cost"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Prescriptive"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "SRM"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 4,
+			questionText: "Which of the below scenarios is an example of inventory being held as a way to balance supply and demand?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "A manufacturer holds inventory of key components to maintain a level production schedule."
+				},
+				{
+					option: "B",
+					correct: true,
+					choiceText: "A manufacturer of seasonal products builds finished-goods inventory before the peak selling period."
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "A distributor maintains a safety stock of slow-moving items at a central distribution center."
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "A retailer stocks a variety of sizes and colors of a fast-selling item to avoid losing sales."
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 5,
+			questionText: "Under the Covid 19 impact, It quickly became clear that suppliers for many firms in Vietnam were struggling to cope with the shock. However, Vietnam Hyundai Thanh Cong is still able to cope with this external circumstance quickly as their supply chain has mul-ti sources from many suppliers and an ability to shorten the distances among their global networks and shorten Lead Time to finish products “Just in Case”. Which  of the following words best describe the company’s supply chain?",
+			choices: [
+				{
+					option: "A",
+					correct: true,
+					choiceText: "Resilient Strategy"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Responsive strategy"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Flexible strategy"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Reliable strategy"
+                }
+			]
+        },
+        {
+            questionNumber: 6,
+			questionText: "A company has identified groups of consumers based on particular characteristics the consumers desire from products and services the company can supply. Characteristics include delivery time, pricing , and service levels. The company is engaging in which of the following practices?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "Customer differentiation"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Order winner segregation"
+				},
+                {
+                    option: "C",
+                    correct: true,
+                    choiceText: "Market segmentation"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Channel definition"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 7,
+			questionText: "A factory applies standard costing, and a potential supplier applies activity-based costing. This difference most likely will have implications for which of the following types of future decisions?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "Price concessions"
+				},
+				{
+					option: "B",
+					correct: true,
+					choiceText: "Make-or-buy"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Distribution warehouse locations"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Freight terms"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 8,
+			questionText: "The possibility  of customer dissatisfaction in the highest level occurs when?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "Customer expectations are clearly defined."
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Supplier execution is too low."
+				},
+                {
+                    option: "C",
+                    correct: true,
+                    choiceText: "There is a gap between expected performance and perceived performance."
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "There is a gap between what was indicated and what was accomplished"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 9,
+			questionText: "A producer of steel components that are sold either directly or through distributors wants to identify the demand of the end customers for each market segment. Which of the following practices would be most correct?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "Analyzing the buying history for each of the market segments"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Asking the manufacturer's direct customers"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Sending samples of potential future products to the final customers"
                 },
                 {
                     option: "D",
                     correct: true,
-                    choiceText: "12 working days"
+                    choiceText: "Conducting a market research project"
                 }
 				
 
 			]
         },
         {
-            questionNumber: 17,
-			questionText: "X is a fashion retailer. X wants to know the reorder point of its popular sweaters. Last month (30 days), the number of sweaters sold was 85. The maximum sweaters X sold a day was 5. X orders their sweaters from a local supplier. It takes one day for the order to be approved, one week from the order date for it to arrive at X’s warehouse, and one day to receive, process, and shelve the new order upon delivery.\nUnfortunately, X’s supplier only accepts orders on Wednesdays.\nDue to unexpected seasonal demand, X’s supplier was also running low on product, adding an additional 2 days to get stock in from their manufacturer. Plus, the trucks making the delivery were slowed down by bad weather, causing an additional day of delay.",
+            questionNumber: 10,
+			questionText: "A manufacturer has special products for a group of consumers. When demand for these products falls, the manufacturer can alter the production line to a commodity-type product which can be sold on the open market at declined terms to earn cash. Which strategy that the factory is implementing:",
 			choices: [
 				{
 					option: "A",
-					correct: true,
-					choiceText: "91"
+					correct: false,
+					choiceText: "customer focus and alignment"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "61"
+					choiceText: "forecast accuracy"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "90"
+                    choiceText: "multiple downstream channels"
                 },
                 {
                     option: "D",
-                    correct: false,
-                    choiceText: "59"
+                    correct: true,
+                    choiceText: "multiple upstream supply chains"
                 }
 				
 
 			]
         },
         {
-            questionNumber: 18,
-			questionText: "Convenience stores in Korea are regarded as one-stop shops, and they frequently handle package delivery services, allowing consumers to pick up their goods with their shopping essentials. The firm has now teamed with company B, an American online meal ordering and delivery company, to deliver groceries and home items. This collaboration enables consumers to receive a single,________delivery rather than having to organize multiple separate ones.",
+            questionNumber: 11,
+			questionText: "You are the Transportation Manager for a manufacturing and distribution firm. Client demand for your product has recently increased, and your company is struggling to meet customer orders on time. Furthermore, your company's truck fleet is at capacity, necessitating the hiring of additional Logistics and Transport businesses to meet the increased shipping demands. You are in charge of scheduling material shipments between locations at the lowest possible cost while keeping an eye on material availability at each warehouse site. As a result, your task is to utilize the data given to input into Table 1 to determine the optimal feasible solution to decrease freight costs while meeting consumer demand and find out the optimal cost for the firm.\nHints: applying The Least Cost Method for the initial feasible solution and The Modified Distribution method for the optimal test.\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1635219657/logis-test/quiz04-q11a_gddeq4.png\nTable 1: Worksheet used to calculate and find the best solution.\nThe following table is data presented for you to input into Table 1 and calculate possible solutions to the problem\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1635219852/logis-test/quiz04-q11b_hxek0m.png\nThe optimal cost is:",
 			choices: [
 				{
 					option: "A",
-					correct: true,
-					choiceText: "Tailored"
+					correct: false,
+					choiceText: "$890"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Flexible"
+					choiceText: "$990"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "Fast"
+                    choiceText: "$620"
                 },
                 {
                     option: "D",
-                    correct: false,
-                    choiceText: "Timely"
+                    correct: true,
+                    choiceText: "$630"
                 }
 				
 
 			]
         },
         {
-            questionNumber: 19,
-			questionText: "Which of the following statements is not true regarding the value proposition?",
+            questionNumber: 12,
+			questionText: "Apple provides extensive supply chain visibility to the customer across its brick-and-mortar and online retail formats to enable the customer to pick the desired model and product variation, Instead of just being able to go to a traditional retail store, a customer can go to an Apple-owned store, the Apple website, or the Apple mobile app; configure a product with a host of optional attributes; know precisely where and when it is available at any of Apple’s stores nationwide or online; and then select in-store pickup, express shipment, or regular parcel post. Which of the following characteris that Apple’s supply chain has provide its customers:",
 			choices: [
 				{
 					option: "A",
 					correct: true,
-					choiceText: "It offers the highest product quality in each quality dimension."
+					choiceText: "Multiple-channels Fulfillment"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "It differentiates the firm from its competition in a way that is difficult to imitate."
+					choiceText: "Retail channel"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "It satisfies the financial and strategic objectives of the firm."
+                    choiceText: "Distribution channel"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "It can be reliably delivered given the operational capabilities of the firm and its supporting supply chain."
+                    choiceText: "Omni channel"
                 }
 				
 
 			]
         },
         {
-            questionNumber: 20,
-			questionText: " _____ is desirable so the company can react swiftly to changes in the volume and mix of their products.",
+            questionNumber: 13,
+			questionText: "A company provides a single line of products to consumers using retail stores and on-line sales, distributors, and wholesalers. Currently the firm has common pricing and response times for sales in each sales channel. Which of the following strategy is most appropriate to apply to enhances",
 			choices: [
 				{
 					option: "A",
 					correct: true,
-					choiceText: "Process flexibility"
+					choiceText: "Customer segmentation"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Machine flexibility"
-				},
-                {
-                    option: "C",
-                    correct: false,
-                    choiceText: "Work cell flexibility"
-                },
-                {
-                    option: "D",
-                    correct: false,
-                    choiceText: "Total quality management"
-                }
-				
-
-			]
-        },
-        {
-            questionNumber: 21,
-			questionText: "A firm supplies products and services to a wide variety of industries with varying requirements for responsiveness and reliability. Many customers across these industries are not satisfied with the firm's ability to meet the lead time and on time delivery requirements. Which of the following tools is most appropriate for the firm to use to improve customer service?",
-			choices: [
-				{
-					option: "A",
-					correct: false,
-					choiceText: "Customer service ratio metrics"
-				},
-				{
-					option: "B",
-					correct: true,
-					choiceText: "Market segmentation"
+					choiceText: "Customer-facing ordering systems"
 				},
                 {
                     option: "C",
@@ -590,28 +366,252 @@ const data = {
 			]
         },
         {
-            questionNumber: 22,
-			questionText: "Which of the following consequences is a result of shipping directly from the point of manufacture to the customer rather than through a distribution network?",
+            questionNumber: 14,
+			questionText: "Forecasting technique is similar to the use of a seasonal to  measure the ratio of the:",
 			choices: [
 				{
 					option: "A",
-					correct: false,
-					choiceText: "Delivery lead times are consistent."
+					correct: true,
+					choiceText: "average seasonal demand to the average demand for all periods"
 				},
 				{
 					option: "B",
-					correct: true,
-					choiceText: "Risk pooling benefits are negated."
+					correct: false,
+					choiceText: "average demand for all periods to the average seasonal demand"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "Distribution overhead is increased."
+                    choiceText: "average seasonal demand to the standard deviation of the demand for all periods"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "Order-fill rate is decreased."
+                    choiceText: "standard deviation of the seasonal demand to the standard deviation of demand for all periods"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 15,
+			questionText: "X is a fashion retailer. X wants to know the reorder point of its popular sweaters. Last month (30 days), the number of sweaters sold was 95. The maximum sweaters X sold a day was 10.\nX orders their sweaters from a local supplier. It takes one day for the order to be approved, one week from the order date for it to arrive at X’s warehouse, and one day to receive, process, and shelve the new order upon delivery. (supply Delay :9)\nUnfortunately, X’s supplier only accepts orders on Wednesdays.\nDue to unexpected seasonal demand, X’s supplier was also running low on product, adding an additional 2 days to get stock in from their manufacturer. Plus, the trucks making the delivery were slowed down by bad weather, causing an additional day of delay. (reorder delay 6 days)",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "91"
+				},
+				{
+					option: "B",
+					correct: true,
+					choiceText: "180"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "90"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "59"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 16,
+			questionText: "Company X would like to develop an aggregate plan via the transportation method. Data that relate to production, demand, capacity, and cost at its main plant are shown in the following table. Your task is to solve the aggregate planning problem by minimizing the costs of matching production in various periods to future demands and find out the total cost of your aggregate plan.\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1635220393/logis-test/quiz04-q16a_trb9dy.png\n\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1635220512/logis-test/quiz04-16b_xaryt6.png\n\nNotes: Back ordering is not viable",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "$124,990"
+				},
+				{
+					option: "B",
+					correct: true,
+					choiceText: "$153,990"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "$646,990"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "$675,250"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 17,
+			questionText: "An American firm named Evans Cycle has been selling racing cycles at Road street for many years. But, it becomes more competitive when there is a new firm selling more types of cycles that exist nearby and attract more consumers. Therefore, the manager decided to conduct product development projections for a new product to entice customers. Which strategy is the Evans Cycle applying ?",
+			choices: [
+				{
+					option: "A",
+					correct: true,
+					choiceText: "Demand shaping"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Demand Forecasting"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Demand Planning"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Demand Sensing"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 18,
+			questionText: "A Motorcycle company is implementing a focus on just-in-time production system to reduce the overall amount of time to finish a product. Also they expand this strategy to change their Outbound transportation. Instead of hold-shipments for cost-saving opportunities it is turned into small shipments direct to customers in urban areas as soon as finished products are available. Which of the following strategies is the company driving in?",
+			choices: [
+				{
+					option: "A",
+					correct: true,
+					choiceText: "Responsive Supply Chain"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Flexible Supply Chain"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Reliable Supply Chain"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Resilient Supply Chain"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 19,
+			questionText: "A logistics and supply chain manager would like to know the total cost of a chase strategy that matches the forecast below using a steady regular production rate of 400 units a month, a maximum of 40 units per month of overtime, and subcontracting as needed to make up any shortages. The unit costs are:\nRegular production = $45\nOvertime = $85\nSubcontracting = $95\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1635220839/logis-test/quiz04-q19_fnpjy4.png\nWhat is the total cost of a chase strategy?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "$155,950"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "$156,600"
+				},
+                {
+                    option: "C",
+                    correct: true,
+                    choiceText: "$131,650"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "$130,950"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 20,
+			questionText: "COVID-19 has seen Vietnam start to concern about the safety and efficiency of the supply of essential products such as healthcare and pharmaceuticals. Therefore, many firms are now developing the ability to reduce geographic dependence in their global networks and shorten cycle times for finished products by bringing production back to domestic markets to be adaptable with the dramatical change of demand. Which of the following resilient strategy the company follow:",
+			choices: [
+				{
+					option: "A",
+					correct: true,
+					choiceText: "Nearshoring"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Offshoring"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Onshoring"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Outsourcing"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 21,
+			questionText: "A paper supply chain compromise that would support delivering the materials on time for the manufacturer. However, the supply could not be delivered on time due to the severe weather. It’s customers have been waiting lately for more than 2 weeks compared to the previous contracted time. Since the supply arrives, the manufacturer implements product checking and it turns out that half of the supply is all wet. Which of the following competitive priorities the company is false at?",
+			choices: [
+				{
+					option: "A",
+					correct: true,
+					choiceText: "Reliability"
+				},
+				{
+					option: "B",
+					correct: false,
+					choiceText: "Responsiveness"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "Realignment"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "Resiliency"
+                }
+				
+
+			]
+        },
+        {
+            questionNumber: 22,
+			questionText: "Company B is choosing between 2 alternative Order Plans for its inventory of a certain product. The annual demand for the product is expected to be 1000 units.\n\"Plan 1\":\n\t+ order cost would be $60 per order\n\t+ inventory holding cost would be $20 per unit\n\"Plan 2\":\n\t+ order cost would be $40 per order\n\t+ inventory holding cost would be 20% and unit cost is $30\nFind out \"EOQ and total inventory cost\" and decide \"which plan\" would lead to the lower total inventory cost?",
+			choices: [
+				{
+					option: "A",
+					correct: false,
+					choiceText: "EOQ1 = 6000; EOQ2 = 13; Plan 1"
+				},
+				{
+					option: "B",
+					correct: true,
+					choiceText: "EOQ1 =  77; EOQ2 = 115; Plan 2"
+				},
+                {
+                    option: "C",
+                    correct: false,
+                    choiceText: "EOQ1 = 6000; EOQ2 = 13; Plan 2"
+                },
+                {
+                    option: "D",
+                    correct: false,
+                    choiceText: "EOQ1 = 77; EOQ2 = 115; Plan 1"
                 }
 				
 
@@ -619,27 +619,27 @@ const data = {
         },
         {
             questionNumber: 23,
-			questionText: "Products likely to have seasonal or periodic demand patterns include:",
+			questionText: "After recovering from the first attack of COVID 19 pandemic, a manufacturer and wholesaler of jams and jellies. They invest a large amount of money to update their warehouse to be larger and more automotive. When the updated warehouse is completed they buy and keep extra levels of raw materials like fruit and sugar on hand to account for disruptions from their supplier in case the COVID 19 is back. This ensures their production is still able to run in the unexpected event which causes the shortage of raw materials. Which strategy did the firm apply?",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "Toilet paper and paper towels"
+					choiceText: "Square inventory"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Toothpaste and deodorant"
+					choiceText: "Anticipation Inventory"
 				},
                 {
                     option: "C",
-                    correct: true,
-                    choiceText: "Skis and lawnmowers"
+                    correct: false,
+                    choiceText: "inventory control"
                 },
                 {
                     option: "D",
-                    correct: false,
-                    choiceText: "Milk and meat"
+                    correct: true,
+                    choiceText: "Buffer Inventory"
                 }
 				
 
@@ -647,27 +647,27 @@ const data = {
         },
         {
             questionNumber: 24,
-			questionText: "You are the Transportation Manager for a manufacturing and distribution firm. Client demand for your product has recently increased, and your company is struggling to meet customer orders on time. Furthermore, your company's truck fleet is at capacity, necessitating the hiring of additional Logistics and Transport businesses to meet the increased shipping demands. You are in charge of scheduling material shipments between locations at the lowest possible cost while keeping an eye on material availability at each warehouse site. As a result, your task is to utilize the data given to input into Table 1 to determine the optimal feasible solution to decrease freight costs while meeting consumer demand.\nHints: applying The Northwest Corner Method for the initial feasible solution and The Modified Distribution method for the optimal test.\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1634449346/logis-test/Screen_Shot_2021-10-11_at_11.40.06_rafyqi.png\nThe following table is data presented for you to input into Table 1 and calculate possible solutions to the problem\nhttps://res.cloudinary.com/logisticomss6/image/upload/v1634449346/logis-test/Screen_Shot_2021-10-11_at_12.00.03_ijdstj.png\nThe optimal cost is:",
+			questionText: "Company Logisticom compiles all the possible changing market conditions to develop new appropriate products.Then the company assigns probabilities to each possible outcome that has more than a 15% likelihood of occurring. The company is planning effectively to cover nearly 80% of the possible outcomes which could adapt quickly with the changing demand, thereby increasing its flexibility and resilience.",
 			choices: [
 				{
 					option: "A",
 					correct: true,
-					choiceText: "$3,700"
+					choiceText: "Range Forecasting"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "$2,450"
+					choiceText: "Seasonality Forecast"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "$2,250"
+                    choiceText: "Straight-line forecasting"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "$2,600"
+                    choiceText: "Linear regression forecast"
                 }
 				
 
@@ -675,32 +675,33 @@ const data = {
         },
         {
             questionNumber: 25,
-			questionText: "The company A wants to calculate quarterly churn rate to measure how many of its customers leave within a specific period of time:\nMonth 1: Company A has 1,500 customers at the beginning of the month and 90 churn during the month, leaving 1,410 customers at the end (refer to this as Cohort A). There are 200 new sales during the month.\nMonth 2: Of the 1490 customers in Cohort A, another 100 churn, leaving 1390. Of 200 in Cohort B, 15 churn, leaving 185. There are another 200 new sales this month (call this Cohort C).\n Month 3: Of the 1390 customers still in Cohort A, another 90 churn, leaving 1300. Of the 185 customers in Cohort B, 10 more churn, leaving 175. Of the 200 customers in Cohort C, 30 churn, leaving 170.\nWhat is Company A’s quarterly customer churn rate?\nGiven: Customer Churn Rate = (customer at start of quarter - customers at the end of quarter)/ customers at start of quarter.",
+			questionText: "A new firm entering a new market imported a number of inventory to stock. They used traditional forecasting models based on time series techniques that create a forecast based on prior sales history to predict mid-long term future. However, The new market frequently has a constant change of demand in days.Therefore, the traditional methods have shown to be less accurate, making the firm struggle in optimizing available inventory and balancing its network in regional warehouses. The firm’s manager is planning to invest to enhance their forecasting methods. Which of the following is the most appropriate one?",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "17%"
+					choiceText: "Demand shaping"
 				},
 				{
 					option: "B",
-					correct: true,
-					choiceText: "13,33%"
+					correct: false,
+					choiceText: "Demand Forecasting"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "13,42%"
+                    choiceText: "Demand Planning"
                 },
                 {
                     option: "D",
-                    correct: false,
-                    choiceText: "14,67%"
+                    correct: true,
+                    choiceText: "Demand Sensing"
                 }
 				
 			]
         }
     ]
+
 }
 
 

@@ -2,7 +2,7 @@
 
     <div class="flex items-center justify-center gap-8" >
         <div class="w-10 text-error-800" id="hour-glass-animation"></div>
-        <p class="relative text-4xl font-bold tracking-wide transform text-error-800 -translate-x-1/4">{{timeDisplay}}</p>
+        <p class="relative text-4xl font-bold tracking-wide select-none transform text-error-800 -translate-x-1/4">{{timeDisplay}}</p>
     </div>
     
 
@@ -19,7 +19,7 @@ export default {
     emits: ['toSubmit'],
     setup(props, {emit}) {
 
-        const QUIZ_DURATION = ref(4800); //in seconds
+        const QUIZ_DURATION = ref(1800); //in seconds
     
         const timeDisplay = computed(() => 
             {
@@ -29,7 +29,7 @@ export default {
                 const paddedSeconds = ("0" + seconds).slice(-2);
                 return `${paddedMinutes}:${paddedSeconds}`;
             }
-            // `${parseInt(QUIZ_DURATION.value/60)}:${QUIZ_DURATION.value%60}s`
+           
         )
         
         

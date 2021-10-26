@@ -70,6 +70,7 @@ export default {
         }
         isLoading.value = false;
       }).catch(err => {
+        
         error.value = err.response.data.errors[0].message; 
        
         isLoading.value = false});

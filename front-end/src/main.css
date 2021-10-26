@@ -29,7 +29,7 @@
     font-size: 16px;
   }
   .loading {
-    @apply opacity-50;
+    @apply opacity-50 pointer-events-none;
   }
 
   .loader {
