@@ -4,11 +4,14 @@
     <div v-else-if="questions.length < 25" class='w-1/4 mx-auto my-0' id="loading-animation"></div>
     <!-- Main Quiz -->
     <section v-else-if="!isSubmitted && questions.length" class="w-full min-h-screen">
+        <div v-if="isSubmitLoading" class="fixed z-50 grid w-screen h-screen bg-error-900 bg-opacity-70 place-items-center">
+            <p class="text-2xl font-semibold text-center text-gray-50">Submitting your answer... Please do not close the tab!</p>
+        </div>
         <!-- Top Navigation -->
         <nav class='flex items-center justify-between w-full px-6 lg:px-20 pt-11'>
            <img src="../assets/logis-base-logo.png" class="inline-block w-12 md:w-24 " alt="the-logisticom-logo">
             <!-- Time Countdown Animation ---->
-            <TimeCount @toSubmit="submit"/>
+            <TimeCount @toSubmit="submit" :isBtnSubmitted="isSubmitLoading"/>
             <button @click.prevent="submit" class="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white transition-all duration-200 ease-linear rounded-full hover:bg-none hover:bg-error-900 md:py-3 md:text-base md:px-7 bg-gradient-to-r from-red-600 to-pink-600" :class="{loading: isSubmitLoading}">
                 <div v-if="isSubmitLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div>
                     Submit <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -204,29 +207,41 @@ export default {
         
         
         const isSubmitLoading = ref(false);
+        // const isTimeOutSubmit = ref(false);
+        // const isBtnSubmitted = ref(false);
         const submit = () => {
             isSubmitLoading.value = true;
+            
             const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
             QuizAPI.submitQuiz(formattedPayLoad)
             .then(response => {
                 // console.log(response);
                 isSubmitted.value = true;
+                isSubmitLoading.value = false;
                 
                 })
-            .catch(error => console.log(error.response))
-            isSubmitLoading.value = false;
+            .catch(error => {
+                console.log(error.response);
+                isSubmitLoading.value = false;
+                
+                })
+            
 
             //Test locally
             // isSubmitLoading.value = true;
             // setTimeout(() => {
             //     isSubmitLoading.value = false;
-            // }, 3000)
-            //isSubmitted.value = true;
+            //     isSubmitted.value = true;
+            // }, 5000)
+            
             
         }
 
     
-
+        // const timeOutSubmit = () => {
+        //     isTimeOutSubmit.value = true;
+        //     submit();
+        // }
 
 
 

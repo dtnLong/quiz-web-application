@@ -1,5 +1,5 @@
 <template>
-    <div class="text-xl font-semibold leading-8 select-none">Question {{questionNumber}}: 
+    <div class="text-xl font-medium leading-8 select-none">Question {{questionNumber}}: 
         <p v-for="(text, index) in questionFormat"  class="mt-1 whitespace-preline " :key="index" v-html="text"></p>
     </div>
     

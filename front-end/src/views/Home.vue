@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!isLogin" class="relative grid w-full h-screen place-items-center">
+  <section v-if="!isLogin" class="relative grid w-full h-screen place-items-center" style="min-height: 1024px">
     <img src="../assets/logis-base-logo.png" class="absolute w-20 md:w-40 top-11" alt="the-logisticom-logo">
     <div class="flex flex-col items-center w-11/12 md:w-10/12 lg:w-8/12 pb-14 text-gray-50 rounded-xl bg-form-bg pt-9">
       <h1 class="mt-16 mb-8 text-3xl font-bold lg:text-5xl text-error-500">Round 1 Quiz</h1>
@@ -48,7 +48,7 @@ export default {
     })
 
 
-    const isLogin = ref(false);
+    const isLogin = ref(true);
     const isLoading = ref(false);
     const groupName = ref(null);
     const quizCode = ref(null);

@@ -2,7 +2,7 @@
 
     <div class="flex items-center justify-center gap-8" >
         <div class="w-10 text-error-800" id="hour-glass-animation"></div>
-        <p class="relative text-4xl font-bold tracking-wide select-none transform text-error-800 -translate-x-1/4">{{timeDisplay}}</p>
+        <p class="relative text-4xl font-bold tracking-wide transform select-none text-error-800 -translate-x-1/4">{{timeDisplay}}</p>
     </div>
     
 
@@ -15,6 +15,12 @@ import LottieAnimation from 'lottie-vuejs'
 import {onMounted, ref, computed} from 'vue';
 import  AnimationData from '../assets/hour-glass-animation.json';
 export default {
+    props: {
+        isBtnSubmitted: {
+            type: Boolean,
+            default: false
+        },
+     },
     components: {LottieAnimation},
     emits: ['toSubmit'],
     setup(props, {emit}) {
@@ -43,19 +49,29 @@ export default {
                 
                 animationData: AnimationData,
             })
-        
+            
+            
+            
+                
+                let timeInterval = setInterval(()=> {
+                    //During the submit process, stop the timer.
+                    if (props.isBtnSubmitted){
+                        clearInterval(timeInterval);
+                        return;
+                    } 
+                    
+                    if (QUIZ_DURATION.value>0){
+                        QUIZ_DURATION.value -=1;
+                    }else{
 
-            let timeInterval = setInterval(()=> {
-                if (QUIZ_DURATION.value>0){
-                    QUIZ_DURATION.value -=1;
-                }else{
-
-                    emit("toSubmit", true);
-                    clearInterval(timeInterval);
-                }
+                        emit("toSubmit", true);
+                        clearInterval(timeInterval);
+                    }
                 
 
-            }, 1000) 
+                }, 1000) 
+            
+            
         
         })
 
