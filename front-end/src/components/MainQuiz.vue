@@ -8,7 +8,7 @@
             <p class="text-2xl font-semibold text-center text-gray-50">Submitting your answer... Please do not close the tab!</p>
         </div>
         <!-- Top Navigation -->
-        <nav class='flex items-center justify-between w-full px-6 lg:px-20 pt-11'>
+        <nav class='relative flex items-center justify-between w-full px-6 lg:px-20 pt-11'>
            <img src="../assets/logis-base-logo.png" class="inline-block w-12 md:w-24 " alt="the-logisticom-logo">
             <!-- Time Countdown Animation ---->
             <TimeCount @toSubmit="submit" :isBtnSubmitted="isSubmitLoading"/>
@@ -16,6 +16,7 @@
                 <div v-if="isSubmitLoading" class="inline-block w-4 h-4 ease-linear border-2 border-t-2 border-gray-200 rounded-full loader"></div>
                     Submit <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" color="#f9f9f9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
+            <p v-if="submitError" class='absolute text-xs right-6 lg:right-20 top-full text-error-900'>Cannot submit. Please try again!</p>
         </nav>
        
         
@@ -207,8 +208,8 @@ export default {
         
         
         const isSubmitLoading = ref(false);
-        // const isTimeOutSubmit = ref(false);
-        // const isBtnSubmitted = ref(false);
+        const submitError = ref(false);
+        
         const submit = () => {
             isSubmitLoading.value = true;
             
@@ -216,13 +217,21 @@ export default {
             QuizAPI.submitQuiz(formattedPayLoad)
             .then(response => {
                 // console.log(response);
-                isSubmitted.value = true;
-                isSubmitLoading.value = false;
+                if (response.status == 200) {
+                    isSubmitted.value = true;
+                    isSubmitLoading.value = false;
+                }else{
+                    console.log(response.statusText);
+                    submitError.value = true;
+                    isSubmitLoading.value = false;
+                }
+                
                 
                 })
             .catch(error => {
-                console.log(error.response);
+                console.log(error);
                 isSubmitLoading.value = false;
+                submitError.value = true;
                 
                 })
             
@@ -238,16 +247,12 @@ export default {
         }
 
     
-        // const timeOutSubmit = () => {
-        //     isTimeOutSubmit.value = true;
-        //     submit();
-        // }
 
 
 
        
         
-        return{handleQuestionClick, questions, currentQuestionIndex/*, selectAns*/, toNextQuestion, toPreviousQuestion,  /*questionNumberList,checkValue, buttonText*/isSubmitted, submitPayLoad/*, toggleIsSubmitted*/, handleSelected, fetchMsg, submit, isSubmitLoading}
+        return{handleQuestionClick, questions, currentQuestionIndex/*, selectAns*/, toNextQuestion, toPreviousQuestion,  /*questionNumberList,checkValue, buttonText*/isSubmitted, submitPayLoad/*, toggleIsSubmitted*/, handleSelected, fetchMsg, submit, isSubmitLoading, submitError}
     },
 }
 </script>

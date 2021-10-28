@@ -39,7 +39,7 @@ export default {
             })
             
         })
-        console.log(questionFormat.value)
+        // console.log(questionFormat.value)
     
         return{questionFormat};
          
