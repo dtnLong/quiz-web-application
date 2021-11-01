@@ -63,17 +63,25 @@ export default {
     }
     else{
       isLoading.value = true;
-      LoginAPI.auth({groupName:groupName.value, quizCode: quizCode.value})
-      .then((response) => {
-        if (response.data.success) {
-          isLogin.value = true;
-        }
-        isLoading.value = false;
-      }).catch(err => {
+      // LoginAPI.auth({groupName:groupName.value, quizCode: quizCode.value})
+      // .then((response) => {
+      //   if (response.data.success) {
+      //     isLogin.value = true;
+      //   }
+      //   isLoading.value = false;
+      // }).catch(err => {
         
-        error.value = err.response.data.errors[0].message; 
+      //   error.value = err.response.data.errors[0].message; 
        
-        isLoading.value = false});
+      //   isLoading.value = false});
+
+      //Test local
+      setTimeout(() => {
+        isLoading.value = false;
+        isLogin.value = true;
+      }, 3000)
+
+
     }
     }
 

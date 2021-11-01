@@ -5,27 +5,27 @@ const data = {
 	questions:[
 		{
 			questionNumber: 1,
-			questionText: "The performance measurement approach that would be most useful in measuring and describing supply chain processes would be:",
+			questionText: "What is your job?",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "Strategic Profit Model"
+					choiceText: "easd"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Balanced scorecard"
+					choiceText: "acfdsa"
 				},
                 {
                     option: "C",
                     correct: true,
-                    choiceText: "SCOR model"
+                    choiceText: "asdasd"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "All of these"
+                    choiceText: "qweasd"
                 }
 				
 
@@ -33,27 +33,27 @@ const data = {
 		},
         {
             questionNumber: 2,
-			questionText: "VinFast claims that its producing processes conduct fewer greenhouse gases than those of its rivals. This suggests that VinFast has a focus on:",
+			questionText: "What is your name?",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "Risk Management"
+					choiceText: "adssdaas"
 				},
 				{
 					option: "B",
 					correct: true,
-					choiceText: "Sustainability"
+					choiceText: "asdasd"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "Flexibility"
+                    choiceText: "asdasd"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "Profitability"
+                    choiceText: "asdasd"
                 }
 				
 
@@ -61,27 +61,27 @@ const data = {
         },
         {
             questionNumber: 3,
-			questionText: "A Chinese firm that has a diversity of supplier relationships which helps it provide many kinds of products and services to many types of consumers. The business is still going well until the internal conflict of supplier A and B occurs and they could not work together. This forces the Chinese firm to considerably and carefully choose who they will continue working with due to the exit of one of them will make the firm lose their production and consumer as well. Which measurement could help this firm to make the right decision?",
+			questionText: "How often do you study?",
 			choices: [
 				{
 					option: "A",
 					correct: true,
-					choiceText: "Cost to serve"
+					choiceText: "Asdasd"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Transaction cost"
+					choiceText: "Sadsad"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "Prescriptive"
+                    choiceText: "Qweqwe"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "SRM"
+                    choiceText: "vsvcvs"
                 }
 				
 
@@ -89,27 +89,27 @@ const data = {
         },
         {
             questionNumber: 4,
-			questionText: "Which of the below scenarios is an example of inventory being held as a way to balance supply and demand?",
+			questionText: "when you get your wallet?",
 			choices: [
 				{
 					option: "A",
 					correct: false,
-					choiceText: "A manufacturer holds inventory of key components to maintain a level production schedule."
+					choiceText: "Sadasd"
 				},
 				{
 					option: "B",
 					correct: true,
-					choiceText: "A manufacturer of seasonal products builds finished-goods inventory before the peak selling period."
+					choiceText: "Dsadqw"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "A distributor maintains a safety stock of slow-moving items at a central distribution center."
+                    choiceText: "Gfsdgfsd"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "A retailer stocks a variety of sizes and colors of a fast-selling item to avoid losing sales."
+                    choiceText: "gbfdgfsd"
                 }
 				
 
@@ -117,27 +117,27 @@ const data = {
         },
         {
             questionNumber: 5,
-			questionText: "Under the Covid 19 impact, It quickly became clear that suppliers for many firms in Vietnam were struggling to cope with the shock. However, Vietnam Hyundai Thanh Cong is still able to cope with this external circumstance quickly as their supply chain has mul-ti sources from many suppliers and an ability to shorten the distances among their global networks and shorten Lead Time to finish products “Just in Case”. Which  of the following words best describe the company’s supply chain?",
+			questionText: "How often do you go to school?",
 			choices: [
 				{
 					option: "A",
 					correct: true,
-					choiceText: "Resilient Strategy"
+					choiceText: "Dasdqwq"
 				},
 				{
 					option: "B",
 					correct: false,
-					choiceText: "Responsive strategy"
+					choiceText: "Dqwwqtwef"
 				},
                 {
                     option: "C",
                     correct: false,
-                    choiceText: "Flexible strategy"
+                    choiceText: "Qsdqwrt Wqg"
                 },
                 {
                     option: "D",
                     correct: false,
-                    choiceText: "Reliable strategy"
+                    choiceText: "grefrqwedeq"
                 }
 			]
         },
