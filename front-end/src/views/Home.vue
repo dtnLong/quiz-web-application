@@ -63,23 +63,18 @@ export default {
     }
     else{
       isLoading.value = true;
-      // LoginAPI.auth({groupName:groupName.value, quizCode: quizCode.value})
-      // .then((response) => {
-      //   if (response.data.success) {
-      //     isLogin.value = true;
-      //   }
-      //   isLoading.value = false;
-      // }).catch(err => {
-        
-      //   error.value = err.response.data.errors[0].message; 
-       
-      //   isLoading.value = false});
-
-      //Test local
-      setTimeout(() => {
+      LoginAPI.auth({groupName:groupName.value, quizCode: quizCode.value})
+      .then((response) => {
+        if (response.data.success) {
+          isLogin.value = true;
+        }
         isLoading.value = false;
-        isLogin.value = true;
-      }, 3000)
+      }).catch(err => {
+        
+        error.value = err.response.data.errors[0].message; 
+       
+        isLoading.value = false});
+
 
 
     }

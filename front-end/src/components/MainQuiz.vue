@@ -118,12 +118,12 @@ export default {
 
         const loadQuiz = async () => {
             try {
-                // let response = await QuizAPI.getQuiz(props.quizCode);
-                // questions.value = response.data.quiz.questions;
+                let response = await QuizAPI.getQuiz(props.quizCode);
+                questions.value = response.data.quiz.questions;
                 
                 //Test with local server
-               let response = await QuizAPI.getLocalQuiz();
-               questions.value = response.questions;
+            //    let response = await QuizAPI.getLocalQuiz();
+            //    questions.value = response.questions;
                 
 
                  //Initialize the submit payload once questions.value are fetched.
@@ -212,37 +212,37 @@ export default {
         const submitError = ref(false);
         
         const submit = () => {
-            // isSubmitLoading.value = true;
+            isSubmitLoading.value = true;
             
-            // const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
-            // QuizAPI.submitQuiz(formattedPayLoad)
-            // .then(response => {
-            //     // console.log(response);
-            //     if (response.status == 200) {
-            //         isSubmitted.value = true;
-            //         isSubmitLoading.value = false;
-            //     }else{
-            //         console.log(response.statusText);
-            //         submitError.value = true;
-            //         isSubmitLoading.value = false;
-            //     }
+            const formattedPayLoad = {...submitPayLoad, answers: formattedAnwser()}
+            QuizAPI.submitQuiz(formattedPayLoad)
+            .then(response => {
+                // console.log(response);
+                if (response.status == 200) {
+                    isSubmitted.value = true;
+                    isSubmitLoading.value = false;
+                }else{
+                    console.log(response.statusText);
+                    submitError.value = true;
+                    isSubmitLoading.value = false;
+                }
                 
                 
-            //     })
-            // .catch(error => {
-            //     console.log(error);
-            //     isSubmitLoading.value = false;
-            //     submitError.value = true;
+                })
+            .catch(error => {
+                console.log(error);
+                isSubmitLoading.value = false;
+                submitError.value = true;
                 
-            //     })
+                })
             
 
             //Test locally
-            isSubmitLoading.value = true;
-            setTimeout(() => {
-                isSubmitLoading.value = false;
-                isSubmitted.value = true;
-            }, 5000)
+            // isSubmitLoading.value = true;
+            // setTimeout(() => {
+            //     isSubmitLoading.value = false;
+            //     isSubmitted.value = true;
+            // }, 5000)
             
             
         }
