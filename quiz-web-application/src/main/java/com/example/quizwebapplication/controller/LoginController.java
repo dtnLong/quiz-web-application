@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://quiz.thelogisticom.org", allowCredentials = "true")
 @RestController
 @AllArgsConstructor
 public class LoginController {
