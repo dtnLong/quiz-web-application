@@ -34,7 +34,7 @@ public class LoginController {
         String token = authenticationService.createToken(loginInfo);
         HttpHeaders responseHeaders = new HttpHeaders();
         // Add token to http only cookie with max age of 2h30min
-        responseHeaders.add("Set-Cookie", "token=" + token + "; Path=/api; Max-Age=9000; HttpOnly");
+        responseHeaders.add("Set-Cookie", "token=" + token + "; Domain=thelogisticom.org; Path=/api; Max-Age=9000; HttpOnly; ");
         response.setStatus(HttpStatus.OK.value());
 
         return ResponseEntity.ok().headers(responseHeaders).body(response);
