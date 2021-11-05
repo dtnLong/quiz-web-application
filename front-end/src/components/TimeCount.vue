@@ -51,25 +51,48 @@ export default {
             })
             
             
+            let preSec = Date.now();
+
+            function countTime() {
+                let millis = Date.now() - preSec;
+                QUIZ_DURATION.value = (1800 - Math.floor(millis / 1000));
+                if (QUIZ_DURATION.value>0 && (!props.isBtnSubmitted)) {
+                    setTimeout(countTime, 1000);
+                }else if (QUIZ_DURATION.value == 0){
+                    emit("toSubmit", true);
+                }
+
+                
+            }
+            setTimeout(countTime, 1000);
+
             
                 
-                let timeInterval = setInterval(()=> {
-                    //During the submit process, stop the timer.
-                    if (props.isBtnSubmitted){
-                        clearInterval(timeInterval);
-                        return;
-                    } 
+                // let timeInterval = setInterval(()=> {
+                //     //During the submit process, stop the timer.
+                //     if (props.isBtnSubmitted){
+                //         clearInterval(timeInterval);
+                //         return;
+                //     } 
                     
-                    if (QUIZ_DURATION.value>0){
-                        QUIZ_DURATION.value -=1;
-                    }else{
+                //     if (QUIZ_DURATION.value>0){
+                //         let millis = Date.now() - preSec;
+                //         preSec = Date.now();
+                //         if (millis >=1000){
+                //             QUIZ_DURATION.value -= Math.floor(millis / 1000);
+                //         }
+                        
+                //         // console.log(QUIZ_DURATION.value);
+                //     }else{
 
-                        emit("toSubmit", true);
-                        clearInterval(timeInterval);
-                    }
+                //         emit("toSubmit", true);
+                //         clearInterval(timeInterval);
+                //     }
                 
 
-                }, 1000) 
+                // }, 1000) 
+
+                
             
             
         
