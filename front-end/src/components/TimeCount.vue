@@ -58,7 +58,7 @@ export default {
                 QUIZ_DURATION.value = (1800 - Math.floor(millis / 1000));
                 if (QUIZ_DURATION.value>0 && (!props.isBtnSubmitted)) {
                     setTimeout(countTime, 1000);
-                }else if (QUIZ_DURATION.value == 0){
+                }else if (QUIZ_DURATION.value == 0 && (!props.isBtnSubmitted)){
                     emit("toSubmit", true);
                 }
 
